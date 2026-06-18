@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="SAG Setup Logbook">
+  <rect width="512" height="512" rx="96" fill="#101820"/>
+  <rect x="72" y="72" width="368" height="368" rx="88" fill="#16252b" stroke="#8ff514" stroke-width="12"/>
+  <path d="M176 142v188M336 142v188M176 190h160" stroke="#8ff514" stroke-width="24" stroke-linecap="round"/>
+  <path d="M154 348c52 58 152 58 204 0" fill="none" stroke="#f7fff3" stroke-width="18" stroke-linecap="round"/>
+  <text x="256" y="421" text-anchor="middle" font-family="system-ui, sans-serif" font-size="82" font-weight="800" fill="#8ff514">SAG</text>
+</svg>

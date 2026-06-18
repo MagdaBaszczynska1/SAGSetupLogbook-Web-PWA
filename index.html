@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101820">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SAG Logbook">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>SAG Setup Logbook</title>
+</head>
+<body>
+  <header class="header">
+    <div>
+      <p class="eyebrow">SAG Setup Logbook</p>
+      <h1>Kalkulator i dziennik zawieszenia</h1>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Główna nawigacja">
+    <button class="tab active" data-view="calculator" aria-selected="true">Kalkulator</button>
+    <button class="tab" data-view="bikes" aria-selected="false">Rowery</button>
+    <button class="tab" data-view="history" aria-selected="false">Historia</button>
+    <button class="tab" data-view="data" aria-selected="false">Dane</button>
+  </nav>
+
+  <main>
+    <section id="calculatorView" class="view active">
+      <div class="card hero">
+        <div>
+          <p class="eyebrow">Pomiar SAG</p>
+          <h2>Ustaw zawieszenie precyzyjnie</h2>
+          <p>Wpisz skok, ugięcie i docelowy SAG.</p>
+        </div>
+        <div id="liveSag" class="hero-value">—%</div>
+      </div>
+
+      <form id="calculatorForm" novalidate>
+        <div class="card">
+          <h3>Rower i zawieszenie</h3>
+          <label for="bikeSelect">Profil roweru</label>
+          <select id="bikeSelect">
+            <option value="">Bez profilu</option>
+          </select>
+
+          <fieldset>
+            <legend>Typ zawieszenia</legend>
+            <div class="segmented">
+              <label><input type="radio" name="suspensionType" value="fork" checked> Widelec</label>
+              <label><input type="radio" name="suspensionType" value="shock"> Damper</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="card">
+          <h3>Dane pomiaru</h3>
+          <div class="grid">
+            <div>
+              <label for="travel">Skok zawieszenia (mm)</label>
+              <input id="travel" type="number" min="0.1" step="0.5" value="160">
+              <p class="help">Dla dampera wpisz skok tłoczyska.</p>
+              <p class="error" id="travelError"></p>
+            </div>
+            <div>
+              <label for="compression">Zmierzona wartość ugięcia (mm)</label>
+              <input id="compression" type="number" min="0" step="0.5" placeholder="np. 32">
+              <p class="help">Zmierz przesunięcie gumowego pierścienia.</p>
+              <p class="error" id="compressionError"></p>
+            </div>
+            <div>
+              <label for="targetSag">Docelowy SAG (%)</label>
+              <input id="targetSag" type="number" min="1" max="99" step="1" value="25">
+              <div class="quick">
+                <button type="button" data-target="20">20%</button>
+                <button type="button" data-target="25">25%</button>
+                <button type="button" data-target="30">30%</button>
+              </div>
+              <p class="error" id="targetSagError"></p>
+            </div>
+            <div>
+              <label for="pressure">Ciśnienie (PSI, opcjonalnie)</label>
+              <input id="pressure" type="number" min="0.1" step="1" placeholder="np. 82">
+              <p class="error" id="pressureError"></p>
+            </div>
+          </div>
+        </div>
+
+        <div id="resultCard" class="card result" hidden aria-live="polite">
+          <div class="result-head">
+            <div>
+              <p class="eyebrow">Wynik</p>
+              <h3 id="interpretationTitle">—</h3>
+            </div>
+            <div id="currentSag" class="hero-value">—%</div>
+          </div>
+          <dl>
+            <div><dt>Docelowe ugięcie</dt><dd id="targetCompression">— mm</dd></div>
+            <div><dt>Różnica</dt><dd id="differencePoints">— p.p.</dd></div>
+            <div><dt>Różnica w milimetrach</dt><dd id="differenceMm">— mm</dd></div>
+          </dl>
+          <p id="interpretationText"></p>
+        </div>
+
+        <div class="actions">
+          <button id="resetButton" type="button" class="secondary">Wyczyść</button>
+          <button type="submit" class="primary">Zapisz pomiar</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="bikesView" class="view">
+      <div class="card">
+        <p class="eyebrow">Profile</p>
+        <h2>Dodaj rower</h2>
+        <form id="bikeForm">
+          <div class="grid">
+            <div><label for="bikeName">Nazwa roweru</label><input id="bikeName" required></div>
+            <div><label for="bikeModel">Model</label><input id="bikeModel"></div>
+            <div><label for="forkTravel">Skok widelca (mm)</label><input id="forkTravel" type="number" step="0.5"></div>
+            <div><label for="shockTravel">Skok dampera (mm)</label><input id="shockTravel" type="number" step="0.5"></div>
+            <div><label for="forkTargetSag">Docelowy SAG widelca (%)</label><input id="forkTargetSag" type="number"></div>
+            <div><label for="shockTargetSag">Docelowy SAG dampera (%)</label><input id="shockTargetSag" type="number"></div>
+          </div>
+          <button class="primary" type="submit">Dodaj rower</button>
+        </form>
+      </div>
+      <div id="bikeList" class="stack"></div>
+    </section>
+
+    <section id="historyView" class="view">
+      <div class="section-head">
+        <div><p class="eyebrow">Dziennik</p><h2>Historia pomiarów</h2></div>
+        <button id="clearHistoryButton" class="danger">Usuń historię</button>
+      </div>
+      <div id="historyList" class="stack"></div>
+    </section>
+
+    <section id="dataView" class="view">
+      <div class="card">
+        <p class="eyebrow">Kopie danych</p>
+        <h2>Eksport i import</h2>
+        <p>Dane są przechowywane lokalnie w przeglądarce.</p>
+        <div class="button-row">
+          <button id="exportButton" class="primary">Eksportuj dane</button>
+          <label class="secondary file-label">Importuj dane<input id="importInput" type="file" accept="application/json" hidden></label>
+        </div>
+        <p id="dataStatus" class="status" aria-live="polite"></p>
+      </div>
+      <div class="card">
+        <h3>Instalacja na iPhonie</h3>
+        <ol>
+          <li>Otwórz opublikowaną stronę w Safari.</li>
+          <li>Dotknij przycisku udostępniania.</li>
+          <li>Wybierz „Dodaj do ekranu początkowego”.</li>
+          <li>Potwierdź przyciskiem „Dodaj”.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <template id="emptyTemplate">
+    <div class="card empty"><h3>Brak danych</h3><p>Dodaj pierwszy wpis.</p></div>
+  </template>
+  <script src="app.js" defer></script>
+</body>
+</html>
