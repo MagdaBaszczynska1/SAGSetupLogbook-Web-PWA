@@ -1,1 +1,1 @@
-const stage = 2;
+// Moduł zachowany dla zgodności z wcześniejszą strukturą projektu.
