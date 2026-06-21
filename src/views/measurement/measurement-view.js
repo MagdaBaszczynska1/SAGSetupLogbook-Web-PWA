@@ -2,7 +2,7 @@ import { createElement } from "../../utils/dom.js";
 import { stage4BikeProfiles } from "../../stores/stage4-demo-data.js";
 import { temporaryMeasurementStore } from "../../stores/temporary-measurement-store.js";
 import { createMeasurementController } from "./measurement-controller.js";
-import { createMeasurementHeaderActions, createConfigurationCards } from "./measurement-configuration.js";
+import { createMeasurementToolbar, createConfigurationCards } from "./measurement-configuration.js";
 import { createCompressionCard, createTargetCard, createAdditionalDataCard } from "./measurement-controls.js";
 import { createResultsSection } from "./measurement-result-card.js";
 import { createSaveBar } from "./measurement-save-bar.js";
@@ -22,7 +22,6 @@ export function createMeasurementView() {
     className: "screen measurement-screen",
     attributes: { "aria-labelledby": "measurement-heading" }
   });
-  screen.headerActions = createMeasurementHeaderActions();
 
   const stack = createElement("div", { className: "measurement-stack" });
   stack.append(
@@ -39,6 +38,7 @@ export function createMeasurementView() {
   });
 
   screen.append(
+    createMeasurementToolbar(),
     stack,
     createSaveBar(),
     notice,
