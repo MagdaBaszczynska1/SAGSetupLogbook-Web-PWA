@@ -6,22 +6,25 @@ Prace nad wiernym przeniesieniem aplikacji natywnej odbywają się na gałęzi `
 
 ## Aktualny etap
 
-Etap 3: modele, kalkulator SAG, walidacja i testy jednostkowe.
+Etap 4: kompletny ekran Pomiar.
 
 Na tej gałęzi działają obecnie:
 
-- punkt startowy aplikacji,
-- cztery główne trasy,
-- dolna nawigacja,
-- osobne moduły widoków,
-- podstawowy system stylów,
+- cztery główne trasy i dolna nawigacja,
 - modele profilu roweru, pomiaru i Dziennika,
 - parser polskich liczb,
-- kompletna logika kalkulatora SAG,
-- walidacja i konfiguracja suwaków,
-- 32 testy jednostkowe.
+- kalkulator SAG i walidacja,
+- działający ekran Pomiar,
+- wybór profilu oraz Widelec/Damper,
+- edycja skoku,
+- suwak i przyciski ugięcia,
+- cele 20%, 25%, 30% i wartość własna,
+- opcjonalne ciśnienie,
+- automatyczny wynik i interpretacja,
+- reset, pomoc i zapis bez identycznych duplikatów,
+- testy jednostkowe logiki i kontrolera Pomiaru.
 
-Logika nie jest jeszcze podłączona do pełnego ekranu Pomiar. Magazyny danych i PWA zostaną dodane w kolejnych etapach.
+Pomiary są obecnie przechowywane tylko w pamięci bieżącej sesji. IndexedDB i prawdziwe profile rowerów zostaną dodane w etapie 5. PWA pozostaje wyłączone.
 
 ## Uruchomienie lokalne
 
@@ -44,5 +47,6 @@ Nie otwieraj pliku `index.html` bezpośrednio przez `file://`, ponieważ aplikac
 - `docs/ETAP_1_MAPA_APLIKACJI_NATYWNEJ.md`
 - `docs/ETAP_2_STRUKTURA_PROJEKTU.md`
 - `docs/ETAP_3_MODELE_KALKULATOR_WALIDACJA.md`
+- `docs/ETAP_4_EKRAN_POMIAR.md`
 
 Gałąź `main` pozostaje wersją opublikowaną. Gałąź przebudowy nie powinna zostać połączona z `main`, dopóki wszystkie funkcje i testy nie zostaną ukończone.
