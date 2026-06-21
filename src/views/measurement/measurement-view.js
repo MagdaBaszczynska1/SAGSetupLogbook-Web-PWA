@@ -1,34 +1,65 @@
 import { createElement } from "../../utils/dom.js";
-import { createStageCard } from "../../components/ui/stage-card.js";
+import { stage4BikeProfiles } from "../../stores/stage4-demo-data.js";
+import { temporaryMeasurementStore } from "../../stores/temporary-measurement-store.js";
+import { createMeasurementController } from "./measurement-controller.js";
+import { createMeasurementToolbar, createConfigurationCards } from "./measurement-configuration.js";
+import { createCompressionCard, createTargetCard, createAdditionalDataCard } from "./measurement-controls.js";
+import { createResultsSection } from "./measurement-result-card.js";
+import { createSaveBar } from "./measurement-save-bar.js";
+import { createTravelDialog } from "./measurement-travel-dialog.js";
+import { createMeasurementHelpDialog, createTargetHelpDialog } from "./measurement-help-dialogs.js";
+import { createResetDialog, createSavedDialog } from "./measurement-confirmation-dialogs.js";
+import { bindMeasurementEvents } from "./measurement-events.js";
+import { renderMeasurement } from "./measurement-render.js";
 
 export function createMeasurementView() {
-  return createElement("section", {
-    className: "screen",
-    attributes: { "aria-labelledby": "measurement-heading" },
-    children: [
-      createElement("div", {
-        className: "screen__intro",
-        children: [
-          createElement("h2", {
-            className: "screen__title",
-            text: "Pomiar SAG",
-            attributes: { id: "measurement-heading" }
-          }),
-          createElement("p", {
-            className: "screen__subtitle",
-            text: "Tutaj zostanie przeniesiony kalkulator z aplikacji natywnej."
-          })
-        ]
-      }),
-      createStageCard({
-        title: "Czysty ekran Pomiaru",
-        description: "W tym etapie widok nie wykonuje jeszcze obliczeń. Logika kalkulatora zostanie dodana dopiero po przeniesieniu modeli i walidacji.",
-        items: [
-          "wybór roweru i typu zawieszenia",
-          "skok, ugięcie i docelowy SAG",
-          "wynik oraz zapis pomiaru"
-        ]
-      })
-    ]
+  const controller = createMeasurementController({
+    bikes: stage4BikeProfiles,
+    measurementStore: temporaryMeasurementStore
   });
+
+  const screen = createElement("section", {
+    className: "screen measurement-screen",
+    attributes: { "aria-labelledby": "measurement-heading" }
+  });
+
+  const stack = createElement("div", { className: "measurement-stack" });
+  stack.append(
+    createConfigurationCards(),
+    createCompressionCard(),
+    createTargetCard(),
+    createAdditionalDataCard(),
+    createResultsSection()
+  );
+
+  const notice = createElement("div", {
+    className: "stage4-notice",
+    attributes: { role: "status", hidden: "" }
+  });
+
+  screen.append(
+    createMeasurementToolbar(),
+    stack,
+    createSaveBar(),
+    notice,
+    createTravelDialog(),
+    createMeasurementHelpDialog(),
+    createTargetHelpDialog(),
+    createResetDialog(),
+    createSavedDialog()
+  );
+
+  bindMeasurementEvents(screen, controller);
+  controller.subscribe(snapshot => renderMeasurement(screen, snapshot));
+
+  screen.addEventListener("measurement:add-ride", () => {
+    notice.hidden = false;
+    notice.textContent = "Pomiar jest gotowy. Formularz Dziennika zostanie podłączony w etapie 7.";
+    window.clearTimeout(screen.noticeTimer);
+    screen.noticeTimer = window.setTimeout(() => {
+      notice.hidden = true;
+    }, 4200);
+  });
+
+  return screen;
 }
