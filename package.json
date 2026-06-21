@@ -1,0 +1,12 @@
+{
+  "name": "sag-setup-logbook-web",
+  "private": true,
+  "version": "0.3.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/unit/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
