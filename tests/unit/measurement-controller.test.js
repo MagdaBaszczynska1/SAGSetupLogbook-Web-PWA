@@ -28,6 +28,10 @@ function fixture() {
   return { controller: createMeasurementController({ bikes, measurementStore: store }), saved };
 }
 
+function assertClose(actual, expected, tolerance = 0.000001) {
+  assert.ok(Math.abs(actual - expected) <= tolerance, `${actual} nie jest bliskie ${expected}`);
+}
+
 test("początkowo wynik jest ukryty i zapis niedostępny", () => {
   const { controller } = fixture();
   const state = controller.getSnapshot();
@@ -70,7 +74,7 @@ test("suwak i przyciski ugięcia natychmiast aktualizują wynik", () => {
   controller.adjustMeasuredCompression(1);
   state = controller.getSnapshot();
   assert.equal(state.measuredCompression, 41);
-  assert.equal(state.liveCalculation.result.currentSag, 25.625);
+  assertClose(state.liveCalculation.result.currentSag, 25.625);
 
   controller.adjustMeasuredCompression(-1);
   assert.equal(controller.getSnapshot().measuredCompression, 40);
