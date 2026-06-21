@@ -2,6 +2,8 @@ import { createElement, replaceChildren } from "../../utils/dom.js";
 import { createBottomNavigation } from "../navigation/bottom-navigation.js";
 
 export function createAppShell({ routes, onNavigate }) {
+  const leadingSlot = createElement("div", { className: "app-header__slot" });
+  const trailingSlot = createElement("div", { className: "app-header__slot app-header__slot--trailing" });
   const title = createElement("h1", {
     className: "app-header__title",
     text: "SAG Setup Logbook"
@@ -9,11 +11,7 @@ export function createAppShell({ routes, onNavigate }) {
 
   const header = createElement("header", {
     className: "app-header",
-    children: [
-      createElement("div", { className: "app-header__spacer", attributes: { "aria-hidden": "true" } }),
-      title,
-      createElement("div", { className: "app-header__spacer", attributes: { "aria-hidden": "true" } })
-    ]
+    children: [leadingSlot, title, trailingSlot]
   });
 
   const content = createElement("main", {
@@ -32,6 +30,8 @@ export function createAppShell({ routes, onNavigate }) {
     title.textContent = route.title;
     document.title = `${route.tabLabel} — SAG Setup Logbook`;
     navigation.setActive(route.id);
+    replaceChildren(leadingSlot, [view.headerActions?.leading]);
+    replaceChildren(trailingSlot, [view.headerActions?.trailing]);
     replaceChildren(content, [view]);
     content.focus({ preventScroll: true });
   }
