@@ -1,13 +1,26 @@
 import { createElement } from "../../utils/dom.js";
 
-export function createMeasurementToolbar() {
-  const element = createElement("div", { className: "measurement-toolbar" });
-  element.innerHTML = `
-    <button class="icon-action" type="button" data-action="reset" aria-label="Wyczyść formularz" disabled>↶</button>
-    <h2 class="measurement-toolbar__title" id="measurement-heading">Rower i zawieszenie</h2>
-    <button class="icon-action" type="button" data-action="help" aria-label="Pokaż instrukcję pomiaru">ⓘ</button>
-  `;
-  return element;
+export function createMeasurementHeaderActions() {
+  const leading = createElement("button", {
+    className: "icon-action",
+    text: "↶",
+    attributes: {
+      type: "button",
+      "data-action": "reset",
+      "aria-label": "Wyczyść formularz",
+      disabled: ""
+    }
+  });
+  const trailing = createElement("button", {
+    className: "icon-action",
+    text: "ⓘ",
+    attributes: {
+      type: "button",
+      "data-action": "help",
+      "aria-label": "Pokaż instrukcję pomiaru"
+    }
+  });
+  return Object.freeze({ leading, trailing });
 }
 
 export function createConfigurationCards() {
@@ -18,6 +31,7 @@ export function createConfigurationCards() {
     attributes: { "aria-labelledby": "configuration-title" }
   });
   configuration.innerHTML = `
+    <h2 class="sr-only" id="measurement-heading">Rower i zawieszenie</h2>
     <h3 class="sr-only" id="configuration-title">Konfiguracja pomiaru</h3>
     <label class="selection-row">
       <span class="selection-row__icon" aria-hidden="true">🚲</span>
