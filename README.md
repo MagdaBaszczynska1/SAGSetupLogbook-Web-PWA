@@ -6,7 +6,7 @@ Prace nad wiernym przeniesieniem aplikacji natywnej odbywają się na gałęzi `
 
 ## Aktualny etap
 
-Etap 2: czysta struktura projektu.
+Etap 3: modele, kalkulator SAG, walidacja i testy jednostkowe.
 
 Na tej gałęzi działają obecnie:
 
@@ -14,9 +14,14 @@ Na tej gałęzi działają obecnie:
 - cztery główne trasy,
 - dolna nawigacja,
 - osobne moduły widoków,
-- podstawowy system stylów.
+- podstawowy system stylów,
+- modele profilu roweru, pomiaru i Dziennika,
+- parser polskich liczb,
+- kompletna logika kalkulatora SAG,
+- walidacja i konfiguracja suwaków,
+- 32 testy jednostkowe.
 
-Logika kalkulatora, magazyny danych i PWA nie są jeszcze podłączone. Zostaną dodane w kolejnych etapach bez korzystania ze starego prototypu.
+Logika nie jest jeszcze podłączona do pełnego ekranu Pomiar. Magazyny danych i PWA zostaną dodane w kolejnych etapach.
 
 ## Uruchomienie lokalne
 
@@ -30,9 +35,14 @@ Następnie otwórz:
 
 Nie otwieraj pliku `index.html` bezpośrednio przez `file://`, ponieważ aplikacja używa modułów JavaScript.
 
+## Testy
+
+`npm test`
+
 ## Dokumentacja etapów
 
 - `docs/ETAP_1_MAPA_APLIKACJI_NATYWNEJ.md`
 - `docs/ETAP_2_STRUKTURA_PROJEKTU.md`
+- `docs/ETAP_3_MODELE_KALKULATOR_WALIDACJA.md`
 
 Gałąź `main` pozostaje wersją opublikowaną. Gałąź przebudowy nie powinna zostać połączona z `main`, dopóki wszystkie funkcje i testy nie zostaną ukończone.
