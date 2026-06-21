@@ -49,6 +49,11 @@ export function createMeasurementView() {
     createSavedDialog()
   );
 
+  const travelNumber = screen.querySelector('[data-field="travel-number"]');
+  screen.querySelector('[data-action="apply-travel"]').addEventListener("click", event => {
+    if (!travelNumber.reportValidity()) event.stopImmediatePropagation();
+  }, { capture: true });
+
   bindMeasurementEvents(screen, controller);
   controller.subscribe(snapshot => renderMeasurement(screen, snapshot));
 
