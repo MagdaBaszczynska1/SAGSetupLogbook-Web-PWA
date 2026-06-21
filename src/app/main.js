@@ -15,18 +15,22 @@ const viewFactories = Object.freeze({
 
 function bootstrap() {
   const mountPoint = document.querySelector("#app");
-  if (!mountPoint) {
-    throw new Error("Nie znaleziono punktu montowania aplikacji #app.");
-  }
+  if (!mountPoint) throw new Error("Nie znaleziono punktu montowania aplikacji #app.");
+
+  const views = new Map();
+  const getView = routeId => {
+    if (!views.has(routeId)) {
+      const factory = viewFactories[routeId];
+      if (!factory) throw new Error(`Brak widoku dla trasy: ${routeId}`);
+      views.set(routeId, factory());
+    }
+    return views.get(routeId);
+  };
 
   let shell;
   const router = createRouter({
     onRouteChange(route) {
-      const createView = viewFactories[route.id];
-      if (!createView) {
-        throw new Error(`Brak widoku dla trasy: ${route.id}`);
-      }
-      shell.renderRoute(route, createView());
+      shell.renderRoute(route, getView(route.id));
     }
   });
 
@@ -45,11 +49,6 @@ try {
   console.error("Nie udało się uruchomić aplikacji.", error);
   const mountPoint = document.querySelector("#app");
   if (mountPoint) {
-    mountPoint.innerHTML = `
-      <main class="fatal-error" role="alert">
-        <h1>Nie udało się uruchomić aplikacji</h1>
-        <p>Odśwież stronę. Jeżeli problem się powtórzy, aplikacja wymaga poprawki.</p>
-      </main>
-    `;
+    mountPoint.innerHTML = '<main class="fatal-error" role="alert"><h1>Nie udało się uruchomić aplikacji</h1><p>Odśwież stronę. Jeżeli problem się powtórzy, aplikacja wymaga poprawki.</p></main>';
   }
 }
