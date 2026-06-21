@@ -1,11 +1,25 @@
 # Testy wersji webowej
 
-Ten katalog jest przygotowany na testy przenoszone z aplikacji natywnej.
+Projekt korzysta z wbudowanego test runnera Node.js.
 
-Planowane poziomy:
+Uruchomienie:
 
-- `unit/` — modele, kalkulator, walidacja, formatowanie i zapytania,
+```bash
+npm test
+```
+
+Aktualne testy jednostkowe obejmują:
+
+- parser polskich liczb,
+- walidację pól kalkulatora,
+- wzory i interpretację SAG,
+- zakresy oraz kroki suwaków,
+- uzupełnianie danych z profilu roweru,
+- stan obliczenia na żywo i przycisku zapisu,
+- modele profilu, pomiaru i Dziennika,
+- snapshoty historyczne oraz status powiązania pomiaru.
+
+Kolejne poziomy:
+
 - `integration/` — współpraca widoków z magazynami danych,
 - `e2e/` — pełne ścieżki użytkownika w Safari i na iPhonie.
-
-W etapie 2 sprawdzana jest jedynie struktura aplikacji i nawigacja. Testy logiki biznesowej rozpoczną się w etapie 3.
