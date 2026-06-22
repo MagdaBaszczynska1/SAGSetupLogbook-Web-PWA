@@ -19,23 +19,27 @@ Aktualne testy jednostkowe obejmują:
 - modele profilu, pomiaru i Dziennika,
 - snapshoty historyczne oraz status powiązania pomiaru,
 - kontroler ekranu Pomiar,
-- Widelec/Damper, suwaki, presety celu i ciśnienie,
-- reset, zapis oraz ochronę przed identycznym duplikatem,
-- walidację formularza profilu roweru,
-- CRUD trwałych magazynów,
+- profile rowerów i trwałe magazyny,
 - migrację starszych danych z `localStorage`,
-- filtrowanie Historii po rowerze, „Bez profilu” i zawieszeniu,
-- sortowanie Historii,
-- historyczne opcje rowerów,
-- walidację i pełne przeliczanie edytowanego pomiaru,
-- zachowanie ID, daty i snapshotu roweru podczas edycji,
-- trwałość edycji oraz usuwania pomiarów,
-- przekazywanie kopii pomiaru do szkicu Dziennika,
+- kompletną Historię pomiarów,
+- wyszukiwanie i filtry Dziennika,
+- sortowanie Dziennika,
+- grupowanie kandydatów pomiarów,
+- automatyczne sugerowanie pomiarów z dnia jazdy,
+- ograniczenie do jednego pomiaru danego typu,
+- granicę siedmiu dni dla pomiarów historycznych,
+- walidację formularza wpisu,
+- zachowanie snapshotów podczas edycji,
+- potwierdzenie zapisu bez pomiaru po zmianie kontekstu,
+- obsługę usuniętego profilu,
+- lokalne daty kalendarzowe,
+- trwałość dodawania, edycji i usuwania wpisów,
+- niezależność kopii zwracanych przez magazyn,
+- poprawne ładowanie modułów Dziennika,
 - kodowanie danych użytkownika przed wstawieniem do HTML,
-- odrzucanie brakujących i powtarzających się identyfikatorów,
-- poprawne ładowanie modułów Historii.
+- odrzucanie brakujących i powtarzających się identyfikatorów.
 
-W etapie 6 dodano 19 testów dotyczących zapytań Historii, edycji, trwałości operacji i integracji modułów. Pełny zestaw `npm test` jest uruchamiany przez GitHub Actions.
+W etapie 7 dodano 36 testów dotyczących Dziennika, wyboru pomiarów, dat, snapshotów i trwałości operacji. Pełny zestaw `npm test` został uruchomiony przez GitHub Actions i zakończył się powodzeniem.
 
 Workflow:
 
