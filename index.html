@@ -3,8 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f6f7f8">
-  <meta name="description" content="SAG Setup Logbook — webowa wersja aplikacji do pomiaru SAG i zapisywania ustawień zawieszenia.">
+  <meta name="theme-color" content="#168b2b">
+  <meta name="description" content="SAG Setup Logbook — kalkulator SAG, historia pomiarów i lokalny dziennik ustawień zawieszenia.">
+  <meta name="application-name" content="SAG Setup Logbook">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SAG Logbook">
   <title>SAG Setup Logbook</title>
   <script>
     try {
@@ -14,6 +19,10 @@
       }
     } catch {}
   </script>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icon-512.svg" type="image/svg+xml">
+  <link rel="icon" href="./icons/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <link rel="stylesheet" href="./src/styles/index.css">
 </head>
 <body>
