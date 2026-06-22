@@ -27,9 +27,10 @@ Aktualne testy jednostkowe obejmują:
 - zachowanie pomiarów po usunięciu profilu,
 - migrację starszych danych z `localStorage`,
 - synchronizację profili z ekranem Pomiar,
-- kodowanie danych użytkownika przed wstawieniem do HTML.
+- kodowanie danych użytkownika przed wstawieniem do HTML,
+- odrzucanie brakujących i powtarzających się identyfikatorów.
 
-W etapie 5 dodano 21 testów dotyczących profili, magazynów, migracji i bezpieczeństwa renderowania. Pełny zestaw `npm test` został uruchomiony przez GitHub Actions i zakończył się powodzeniem.
+W etapie 5 dodano 23 testy dotyczące profili, magazynów, migracji i bezpieczeństwa danych. Pełny zestaw `npm test` został uruchomiony przez GitHub Actions i zakończył się powodzeniem.
 
 Workflow:
 
