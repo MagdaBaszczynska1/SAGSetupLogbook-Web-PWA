@@ -6,7 +6,7 @@ Prace nad wiernym przeniesieniem aplikacji natywnej odbywają się na gałęzi `
 
 ## Aktualny etap
 
-Etap 7: kompletny Dziennik jazd.
+Etap 8: kompletne Więcej i Ustawienia.
 
 Na tej gałęzi działają obecnie:
 
@@ -18,22 +18,19 @@ Na tej gałęzi działają obecnie:
 - wersjonowany schemat bazy i migracje,
 - kompletne profile rowerów,
 - kompletna Historia pomiarów,
-- lista Dziennika połączona z trwałym magazynem,
-- wyszukiwanie po trasie, rowerze, notatce i warunkach,
-- filtrowanie według roweru i warunków,
-- sortowanie od najnowszych, najstarszych albo najwyżej ocenionych,
-- dodawanie i edycja wpisów,
-- wybór maksymalnie jednego pomiaru widelca i jednego dampera,
-- automatyczne sugerowanie pomiarów tego roweru z dnia jazdy,
-- kandydaci historyczni z poprzednich siedmiu dni oraz pomiary bez profilu,
-- historyczne snapshoty profilu i pomiarów,
-- szczegóły wpisu, edycja i usuwanie,
-- potwierdzenie zapisu bez pomiaru po zmianie roweru lub dnia jazdy,
-- przekazanie dokładnego pomiaru z Historii do nowego wpisu,
+- kompletny Dziennik jazd,
+- ekran Więcej z poradnikiem i informacjami o prywatności,
+- wygląd systemowy, jasny i ciemny zapisywany lokalnie,
+- pełny eksport JSON,
+- raport CSV zabezpieczony przed formułami arkusza,
+- import JSON z walidacją całego pliku przed zapisem,
+- kopia ratunkowa pobierana przed importem,
+- atomowe zastępowanie kolekcji i automatyczny rollback po błędzie,
+- odświeżenie wszystkich magazynów po imporcie,
 - awaryjny tryb sesyjny, gdy IndexedDB jest niedostępne,
 - testy jednostkowe oraz workflow GitHub Actions.
 
-PWA, service worker, kompletne Ustawienia oraz eksport i import danych pozostają wyłączone do kolejnych etapów.
+PWA, service worker, pełne testy przeglądarkowe i końcowy audyt pozostają do kolejnych etapów.
 
 ## Uruchomienie lokalne
 
@@ -62,5 +59,6 @@ Automatyczne testy są skonfigurowane w `.github/workflows/web-tests.yml`.
 - `docs/ETAP_5_TRWALE_DANE_I_PROFILE.md`
 - `docs/ETAP_6_HISTORIA_POMIAROW.md`
 - `docs/ETAP_7_DZIENNIK_JAZD.md`
+- `docs/ETAP_8_WIECEJ_USTAWIENIA_KOPIE.md`
 
 Gałąź `main` pozostaje wersją opublikowaną. Gałąź przebudowy nie powinna zostać połączona z `main`, dopóki wszystkie funkcje i testy nie zostaną ukończone.
