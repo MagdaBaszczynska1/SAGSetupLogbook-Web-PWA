@@ -4,6 +4,7 @@ import { migrateLegacyLocalStorage } from "../persistence/legacy-migration.js";
 import { createBikeStore } from "../stores/bike-store.js";
 import { createMeasurementStore } from "../stores/measurement-store.js";
 import { createRideJournalStore } from "../stores/ride-journal-store.js";
+import { createRideDraftStore } from "../stores/ride-draft-store.js";
 
 function safeLocalStorage() {
   try {
@@ -41,6 +42,7 @@ export async function createDataContext() {
   const bikeStore = createBikeStore(database);
   const measurementStore = createMeasurementStore(database);
   const rideJournalStore = createRideJournalStore(database);
+  const rideDraftStore = createRideDraftStore();
 
   await Promise.all([
     bikeStore.initialize(),
@@ -59,6 +61,7 @@ export async function createDataContext() {
     bikeStore,
     measurementStore,
     rideJournalStore,
+    rideDraftStore,
     persistence: Object.freeze({
       kind: database.kind,
       isPersistent: database.isPersistent,
