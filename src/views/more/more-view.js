@@ -3,6 +3,7 @@ import { createBikesView } from "../bikes/bikes-view.js";
 import { createDataManagementView } from "./data-management-view.js";
 import { createGuideDialog } from "./guide-dialog.js";
 import { createPrivacyDialog } from "./privacy-dialog.js";
+import { createPwaInstallView } from "./pwa-install-view.js";
 import { createSettingsDialog, renderSettingsDialog } from "./settings-dialog.js";
 
 function actionCard({ icon, title, description, action, buttonText }) {
@@ -30,7 +31,8 @@ export function createMoreView({
   rideJournalStore,
   database,
   appSettingsStore,
-  persistence
+  persistence,
+  pwaManager
 }) {
   const screen = createElement("section", {
     className: "screen more-screen",
@@ -41,7 +43,7 @@ export function createMoreView({
     className: "screen__intro",
     children: [
       createElement("h2", { className: "screen__title", text: "Więcej", attributes: { id: "more-heading" } }),
-      createElement("p", { className: "screen__subtitle", text: "Profile rowerów, poradnik, wygląd, prywatność i kopie danych." })
+      createElement("p", { className: "screen__subtitle", text: "Profile rowerów, instalacja, poradnik, wygląd, prywatność i kopie danych." })
     ]
   });
 
@@ -78,6 +80,7 @@ export function createMoreView({
   const guideDialog = createGuideDialog();
   const settingsDialog = createSettingsDialog();
   const privacyDialog = createPrivacyDialog();
+  const pwaInstall = createPwaInstallView({ pwaManager });
   const dataManagement = createDataManagementView({
     database,
     bikeStore,
@@ -94,7 +97,7 @@ export function createMoreView({
         children: [createElement("div", {
           children: [
             createElement("h2", { text: "O aplikacji", attributes: { id: "about-heading" } }),
-            createElement("p", { text: "SAG Setup Logbook — wersja webowa 0.8.0" })
+            createElement("p", { text: "SAG Setup Logbook — wersja webowa 0.9.0" })
           ]
         })]
       }),
@@ -106,6 +109,7 @@ export function createMoreView({
     intro,
     storageStatus,
     createBikesView({ bikeStore }),
+    pwaInstall,
     tools,
     dataManagement,
     about,
