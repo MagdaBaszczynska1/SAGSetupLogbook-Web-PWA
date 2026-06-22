@@ -1,7 +1,8 @@
 import { createElement, replaceChildren } from "../../utils/dom.js";
 import { createBottomNavigation } from "../navigation/bottom-navigation.js";
+import { createPwaStatus } from "../pwa/pwa-status.js";
 
-export function createAppShell({ routes, onNavigate }) {
+export function createAppShell({ routes, onNavigate, pwaManager }) {
   const title = createElement("h1", {
     className: "app-header__title",
     text: "SAG Setup Logbook"
@@ -22,10 +23,11 @@ export function createAppShell({ routes, onNavigate }) {
   });
 
   const navigation = createBottomNavigation(routes, onNavigate);
+  const pwaStatus = createPwaStatus({ pwaManager });
 
   const element = createElement("div", {
     className: "app-shell",
-    children: [header, content, navigation.element]
+    children: [header, content, pwaStatus, navigation.element]
   });
 
   function renderRoute(route, view) {
