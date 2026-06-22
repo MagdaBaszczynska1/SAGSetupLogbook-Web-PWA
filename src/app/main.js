@@ -13,19 +13,24 @@ async function bootstrap() {
   if (!mountPoint) throw new Error("Nie znaleziono punktu montowania aplikacji #app.");
 
   mountPoint.innerHTML = '<main class="app-loading" role="status"><strong>Uruchamianie aplikacji…</strong><span>Otwieranie bazy danych</span></main>';
-  const [dataContext] = await Promise.all([createDataContext()]);
+  const dataContext = await createDataContext();
   const pwaManager = createPwaManager();
   let router;
 
+  const addMeasurementToRide = measurement => {
+    dataContext.rideDraftStore.setSourceMeasurement(measurement);
+    router.navigate("journal");
+  };
+
   const viewFactories = Object.freeze({
-    measurement: () => createMeasurementView(dataContext),
+    measurement: () => createMeasurementView({
+      ...dataContext,
+      onAddRide: addMeasurementToRide
+    }),
     history: () => createHistoryView({
       ...dataContext,
       onStartMeasurement: () => router.navigate("measurement"),
-      onAddRide: measurement => {
-        dataContext.rideDraftStore.setSourceMeasurement(measurement);
-        router.navigate("journal");
-      }
+      onAddRide: addMeasurementToRide
     }),
     journal: () => createJournalView({
       ...dataContext,
