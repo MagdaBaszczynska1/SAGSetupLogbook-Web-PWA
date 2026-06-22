@@ -54,9 +54,9 @@ test("edycja i usuwanie wpisu Dziennika nie usuwa źródłowego pomiaru", async 
   await page.locator('[data-action="show-ride-entry"]').click();
   await expect(detail).toContainText("Notatka po edycji");
   await detail.locator('[data-action="delete-from-ride-detail"]').click();
-  const confirmation = page.locator("dialog.journal-confirmation-dialog");
+  const confirmation = page.getByRole("dialog", { name: "Usunąć ten wpis?" });
   await expect(confirmation).toBeVisible();
-  await confirmation.locator('[data-action="confirm-journal-action"]').click();
+  await confirmation.getByRole("button", { name: "Usuń wpis" }).click();
   await expect(page.getByText("Brak wpisów w Dzienniku", { exact: true })).toBeVisible();
 
   await navigateTo(page, "Historia");
