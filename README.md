@@ -2,13 +2,13 @@
 
 To niezależna wersja webowa aplikacji iOS SAG Setup Logbook.
 
-Prace nad wiernym przeniesieniem aplikacji natywnej odbywają się na gałęzi `rebuild-from-ios-source`.
+Wierne przeniesienie aplikacji natywnej zostało przygotowane na gałęzi `rebuild-from-ios-source` jako wersja `1.0.0-rc.1`.
 
-## Aktualny etap
+## Status
 
-Etap 9: kompletna Progressive Web App.
+Etap 10: końcowy audyt i release candidate.
 
-Na tej gałęzi działają obecnie:
+Gotowe są:
 
 - cztery główne trasy i dolna nawigacja,
 - modele profilu roweru, pomiaru i Dziennika,
@@ -19,22 +19,23 @@ Na tej gałęzi działają obecnie:
 - kompletne profile rowerów,
 - kompletna Historia pomiarów,
 - kompletny Dziennik jazd,
-- ekran Więcej z poradnikiem i informacjami o prywatności,
-- wygląd systemowy, jasny i ciemny zapisywany lokalnie,
+- poradnik, prywatność i wygląd jasny, ciemny oraz systemowy,
 - pełny eksport JSON i raport CSV,
 - walidowany import JSON z kopią ratunkową oraz rollbackiem,
 - manifest instalacyjny PWA,
-- ikony zwykłe, maskowalne i ikona dla ekranu początkowego iOS,
+- ikony zwykłe, maskowalne i ikona iOS,
 - instalacja przez natywny prompt albo instrukcję Safari,
 - pełny app shell działający offline,
-- wersjonowane cache i usuwanie starych cache,
-- bezpieczna aktualizacja uruchamiana po decyzji użytkownika,
-- jednorazowa migracja ze starego service workera bez trwałego zablokowania aplikacji,
-- globalne komunikaty offline i dostępnej aktualizacji,
-- awaryjny tryb sesyjny, gdy IndexedDB jest niedostępne,
-- testy jednostkowe oraz workflow GitHub Actions.
+- wersjonowane cache i bezpieczne aktualizacje,
+- migracja ze starego service workera,
+- Content Security Policy i polityka `no-referrer`,
+- testy jednostkowe,
+- testy integracyjne i E2E w Chromium oraz WebKit/iPhone,
+- automatyczny audyt WCAG 2.2 AA,
+- test responsywności, klawiatury, IndexedDB, importu i offline,
+- workflow GitHub Actions blokujące błędne wydanie.
 
-Pełne testy E2E w mobilnym Safari i końcowy audyt pozostają do kolejnych etapów.
+Aktualne automatyczne kontrole `Web tests` i `Browser audit` zakończyły się powodzeniem. Przed publikacją produkcyjną zalecane jest jeszcze ręczne zatwierdzenie wyglądu i test na fizycznym iPhonie.
 
 ## Uruchomienie lokalne
 
@@ -50,9 +51,22 @@ Nie otwieraj pliku `index.html` bezpośrednio przez `file://`. Service worker dz
 
 ## Testy
 
+Testy jednostkowe:
+
 `npm test`
 
-Automatyczne testy są skonfigurowane w `.github/workflows/web-tests.yml`.
+Testy integracyjne, E2E, dostępności i offline:
+
+`npm run test:e2e`
+
+Pełny zestaw:
+
+`npm run test:all`
+
+Workflow:
+
+- `.github/workflows/web-tests.yml`
+- `.github/workflows/browser-audit.yml`
 
 ## Dokumentacja etapów
 
@@ -65,5 +79,6 @@ Automatyczne testy są skonfigurowane w `.github/workflows/web-tests.yml`.
 - `docs/ETAP_7_DZIENNIK_JAZD.md`
 - `docs/ETAP_8_WIECEJ_USTAWIENIA_KOPIE.md`
 - `docs/ETAP_9_PWA_OFFLINE_AKTUALIZACJE.md`
+- `docs/ETAP_10_AUDYT_I_TESTY_KONCOWE.md`
 
-Gałąź `main` pozostaje wersją opublikowaną. Gałąź przebudowy nie powinna zostać połączona z `main`, dopóki testy przeglądarkowe i końcowy audyt nie zostaną ukończone.
+Gałąź `main` nadal pozostaje wersją opublikowaną. Pull request jest przygotowany do review i zalecanego scalenia metodą `Squash and merge` po ręcznej akceptacji właścicielki aplikacji.
