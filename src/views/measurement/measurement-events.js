@@ -111,8 +111,8 @@ export function bindMeasurementEvents(root, controller) {
     if (!measurement) return;
     const state = controller.getSnapshot();
     root.querySelector('[data-text="saved-message"]').textContent = state.selectedBikeID
-      ? "Pomiar zapisano w pamięci bieżącej sesji. Możesz wykorzystać go przy tworzeniu wpisu Dziennika."
-      : "Pomiar zapisano w pamięci bieżącej sesji. Aby dodać wpis Dziennika, wybierz profil roweru.";
+      ? "Pomiar zapisano w Historii. Możesz od razu utworzyć z niego wpis Dziennika."
+      : "Pomiar zapisano w Historii. Aby dodać wpis Dziennika, wybierz profil roweru przy kolejnym pomiarze.";
     const addRide = root.querySelector('[data-action="add-ride"]');
     addRide.hidden = !state.selectedBikeID;
     openDialog(savedDialog);
