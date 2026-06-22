@@ -154,6 +154,7 @@ export function createHistoryView({
     const totalCount = measurementsSnapshot.records.length;
     const visibleCount = query.results.length;
     const hasMeasurements = totalCount > 0;
+    const list = root.querySelector('[data-region="history-list"]');
 
     emptyState.hidden = hasMeasurements;
     filters.hidden = !hasMeasurements;
@@ -163,20 +164,20 @@ export function createHistoryView({
 
     if (hasMeasurements) {
       renderBikeFilter(query);
-      const sortSelect = root.querySelector('[data-field="history-sort-order"]');
-      sortSelect.value = sortOrder;
+      root.querySelector('[data-field="history-sort-order"]').value = sortOrder;
       root.querySelectorAll("[data-history-suspension]").forEach(button => {
         const active = button.dataset.historySuspension === suspensionFilter;
         button.classList.toggle("is-active", active);
         button.setAttribute("aria-pressed", String(active));
       });
       root.querySelectorAll('[data-action="clear-history-filters"]').forEach(button => {
-        button.hidden = !query.hasActiveFilters && button.closest(".history-filters");
+        const headerButton = Boolean(button.closest(".history-filters"));
+        button.hidden = headerButton && !query.hasActiveFilters;
       });
       root.querySelector('[data-text="history-count"]').textContent = `Widoczne: ${visibleCount} z ${totalCount}`;
-
-      const list = root.querySelector('[data-region="history-list"]');
       list.replaceChildren(...query.results.map(createMeasurementHistoryRow));
+    } else {
+      list.replaceChildren();
     }
 
     const statusMessage = measurementsSnapshot.errorMessage ?? measurementsSnapshot.noticeMessage;
@@ -274,7 +275,10 @@ export function createHistoryView({
     if (action === "show-measurement") openDetail(id);
     if (action === "delete-measurement") askDelete("one", id);
     if (action === "delete-all-measurements") askDelete("all");
-    if (action === "close-measurement-detail") detailDialog.close();
+    if (action === "close-measurement-detail") {
+      detailDialog.close();
+      selectedMeasurementID = null;
+    }
     if (action === "close-measurement-edit") editDialog.close();
     if (action === "cancel-history-delete") confirmationDialog.close();
     if (action === "edit-measurement") openEditor(measurementStore.getById(selectedMeasurementID));
@@ -286,6 +290,7 @@ export function createHistoryView({
       const measurement = measurementStore.getById(selectedMeasurementID);
       if (measurement && bikesSnapshot.records.length > 0) {
         detailDialog.close();
+        selectedMeasurementID = null;
         onAddRide(measurement);
       }
     }
