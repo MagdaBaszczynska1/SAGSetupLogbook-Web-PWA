@@ -1,5 +1,6 @@
 import { createBikeProfile } from "../models/bike-profile.js";
 import { SAG_INTERPRETATION } from "../models/sag-measurement.js";
+import { createId } from "../utils/ids.js";
 import { DATA_STORE } from "./memory-database.js";
 
 const CURRENT_KEY = "sagSetupLogbookWeb.v2";
@@ -16,6 +17,11 @@ function finiteNonNegative(value) {
   return Number.isFinite(number) && number >= 0 ? number : null;
 }
 
+function validIsoDate(value) {
+  const date = new Date(value ?? Date.now());
+  return Number.isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
+}
+
 function parseStoredState(storage) {
   for (const key of [CURRENT_KEY, LEGACY_KEY]) {
     try {
@@ -30,7 +36,7 @@ function parseStoredState(storage) {
 
 function mapBike(source) {
   return createBikeProfile({
-    id: source.id,
+    id: source.id || createId(),
     name: String(source.name ?? "Rower").trim() || "Rower",
     model: String(source.model ?? "").trim(),
     forkTravel: finitePositive(source.forkTravel),
@@ -39,7 +45,7 @@ function mapBike(source) {
     shockTargetSag: finitePositive(source.shockTargetSag),
     forkPressure: finitePositive(source.forkPressure),
     shockPressure: finitePositive(source.shockPressure),
-    createdAt: source.createdAt ?? new Date().toISOString()
+    createdAt: validIsoDate(source.createdAt)
   });
 }
 
@@ -62,8 +68,8 @@ function mapMeasurement(source) {
       : SAG_INTERPRETATION.TOO_HIGH;
 
   return {
-    id: String(source.id ?? crypto.randomUUID()),
-    date: new Date(source.date ?? Date.now()).toISOString(),
+    id: String(source.id || createId()),
+    date: validIsoDate(source.date),
     bikeID: source.bikeID ?? source.bikeId ?? null,
     bikeNameSnapshot: source.bikeNameSnapshot ?? source.bikeName ?? null,
     suspensionType: source.suspensionType === "shock" ? "shock" : "fork",
