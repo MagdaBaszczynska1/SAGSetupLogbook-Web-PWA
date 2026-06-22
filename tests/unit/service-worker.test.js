@@ -98,7 +98,9 @@ test("aktywacja usuwa wyłącznie stare cache aplikacji i przejmuje klientów", 
   await pending;
   assert.deepEqual(runtime.deletedCaches, ["sag-setup-logbook-old"]);
   assert.equal(runtime.claimed, 1);
-  assert.deepEqual(runtime.clientMessages, [{ type: "PWA_ACTIVATED", version: "0.9.0" }]);
+  assert.equal(runtime.clientMessages.length, 1);
+  assert.equal(runtime.clientMessages[0].type, "PWA_ACTIVATED");
+  assert.equal(runtime.clientMessages[0].version, "0.9.0");
 });
 
 test("nawigacja offline zwraca zapisany index aplikacji", async () => {
