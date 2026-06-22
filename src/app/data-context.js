@@ -5,21 +5,37 @@ import { createBikeStore } from "../stores/bike-store.js";
 import { createMeasurementStore } from "../stores/measurement-store.js";
 import { createRideJournalStore } from "../stores/ride-journal-store.js";
 
+function safeLocalStorage() {
+  try {
+    return globalThis.localStorage ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function createDataContext() {
   let database = createIndexedDbDatabase();
   let persistenceNotice = null;
 
   try {
     await database.initialize();
-    const migration = await migrateLegacyLocalStorage(database);
-    if (migration?.status === "migrated") {
-      persistenceNotice = `Przeniesiono ${migration.bikes} profili i ${migration.measurements} pomiarów ze starszej wersji aplikacji.`;
-    }
   } catch (error) {
     console.error("IndexedDB jest niedostępne. Uruchomiono tryb sesyjny.", error);
     database = createMemoryDatabase();
     await database.initialize();
     persistenceNotice = "Nie udało się uruchomić trwałej bazy. Dane będą dostępne tylko do zamknięcia tej karty.";
+  }
+
+  if (database.isPersistent) {
+    try {
+      const migration = await migrateLegacyLocalStorage(database, safeLocalStorage());
+      if (migration?.status === "migrated") {
+        persistenceNotice = `Przeniesiono ${migration.bikes} profili i ${migration.measurements} pomiarów ze starszej wersji aplikacji.`;
+      }
+    } catch (error) {
+      console.error("Nie udało się przenieść danych starszej wersji.", error);
+      persistenceNotice = "Trwała baza działa, ale nie udało się automatycznie przenieść danych starszej wersji.";
+    }
   }
 
   const bikeStore = createBikeStore(database);
