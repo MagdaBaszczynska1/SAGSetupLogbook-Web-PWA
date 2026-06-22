@@ -2,6 +2,7 @@ import { getBikeDisplayName } from "../../models/bike-profile.js";
 import { bikeProfileToFormValues, validateBikeProfileForm } from "../../services/bike-profile-form.js";
 import { createElement } from "../../utils/dom.js";
 import { formatCompactNumber } from "../../utils/formatters.js";
+import { escapeHtml } from "../../utils/html.js";
 
 function valueText(value, unit) {
   return value === null || value === undefined ? "Nie ustawiono" : `${formatCompactNumber(value)} ${unit}`;
@@ -90,8 +91,12 @@ export function createBikesView({ bikeStore }) {
     deleteAll.hidden = snapshot.records.length === 0;
 
     snapshot.records.forEach(bike => {
+      const safeID = escapeHtml(bike.id);
+      const safeName = escapeHtml(bike.name);
+      const safeModel = escapeHtml(bike.model);
+      const safeSummary = escapeHtml(bikeSummary(bike));
       const card = createElement("article", { className: "profile-card app-card", attributes: { "data-bike-id": bike.id } });
-      card.innerHTML = `<div class="profile-card__main"><span class="profile-card__icon" aria-hidden="true">🚲</span><div><h3>${bike.name}</h3>${bike.model ? `<p>${bike.model}</p>` : ""}<small>${bikeSummary(bike)}</small></div></div><div class="profile-card__actions"><button type="button" class="secondary-action" data-action="show-bike" data-bike-id="${bike.id}">Szczegóły</button><button type="button" class="secondary-action" data-action="edit-bike" data-bike-id="${bike.id}">Edytuj</button><button type="button" class="danger-link" data-action="delete-bike" data-bike-id="${bike.id}">Usuń</button></div>`;
+      card.innerHTML = `<div class="profile-card__main"><span class="profile-card__icon" aria-hidden="true">🚲</span><div><h3>${safeName}</h3>${bike.model ? `<p>${safeModel}</p>` : ""}<small>${safeSummary}</small></div></div><div class="profile-card__actions"><button type="button" class="secondary-action" data-action="show-bike" data-bike-id="${safeID}">Szczegóły</button><button type="button" class="secondary-action" data-action="edit-bike" data-bike-id="${safeID}">Edytuj</button><button type="button" class="danger-link" data-action="delete-bike" data-bike-id="${safeID}">Usuń</button></div>`;
       list.append(card);
     });
 
