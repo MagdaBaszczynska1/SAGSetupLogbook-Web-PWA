@@ -33,6 +33,7 @@ export function createAppShell({ routes, onNavigate }) {
     document.title = `${route.tabLabel} — SAG Setup Logbook`;
     navigation.setActive(route.id);
     replaceChildren(content, [view]);
+    view.dispatchEvent(new CustomEvent("app:route-active", { detail: { routeId: route.id } }));
     content.focus({ preventScroll: true });
   }
 
