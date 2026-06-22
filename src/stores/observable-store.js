@@ -1,5 +1,10 @@
 import { cloneValue } from "../utils/clone.js";
 
+function hasUniqueIdentifiers(values) {
+  const identifiers = values.map(record => record?.id);
+  return identifiers.every(Boolean) && new Set(identifiers).size === identifiers.length;
+}
+
 export function createObservableCollectionStore({ database, storeName, sortRecords, missingMessages = {} }) {
   let records = [];
   let errorMessage = null;
@@ -36,6 +41,17 @@ export function createObservableCollectionStore({ database, storeName, sortRecor
   }
 
   async function add(record) {
+    if (!record?.id) {
+      errorMessage = "Rekord nie ma identyfikatora.";
+      notify();
+      return false;
+    }
+    if (records.some(item => item.id === record.id)) {
+      errorMessage = "Rekord o tym identyfikatorze już istnieje.";
+      notify();
+      return false;
+    }
+
     try {
       await database.put(storeName, record);
       records = sort([...records, cloneValue(record)]);
@@ -112,6 +128,12 @@ export function createObservableCollectionStore({ database, storeName, sortRecor
   }
 
   async function replaceAll(nextRecords) {
+    if (!hasUniqueIdentifiers(nextRecords)) {
+      errorMessage = "Importowana kolekcja zawiera brakujące lub powtarzające się identyfikatory.";
+      notify();
+      return false;
+    }
+
     try {
       await database.replaceAll(storeName, nextRecords);
       records = sort(nextRecords.map(cloneValue));
