@@ -5,6 +5,7 @@ import { createBikeStore } from "../stores/bike-store.js";
 import { createMeasurementStore } from "../stores/measurement-store.js";
 import { createRideJournalStore } from "../stores/ride-journal-store.js";
 import { createRideDraftStore } from "../stores/ride-draft-store.js";
+import { createAppSettingsStore } from "../stores/app-settings-store.js";
 
 function safeLocalStorage() {
   try {
@@ -15,6 +16,8 @@ function safeLocalStorage() {
 }
 
 export async function createDataContext() {
+  const localStorage = safeLocalStorage();
+  const appSettingsStore = createAppSettingsStore(localStorage, globalThis.document);
   let database = createIndexedDbDatabase();
   let persistenceNotice = null;
 
@@ -29,7 +32,7 @@ export async function createDataContext() {
 
   if (database.isPersistent) {
     try {
-      const migration = await migrateLegacyLocalStorage(database, safeLocalStorage());
+      const migration = await migrateLegacyLocalStorage(database, localStorage);
       if (migration?.status === "migrated") {
         persistenceNotice = `Przeniesiono ${migration.bikes} profili i ${migration.measurements} pomiarów ze starszej wersji aplikacji.`;
       }
@@ -62,6 +65,7 @@ export async function createDataContext() {
     measurementStore,
     rideJournalStore,
     rideDraftStore,
+    appSettingsStore,
     persistence: Object.freeze({
       kind: database.kind,
       isPersistent: database.isPersistent,
