@@ -6,7 +6,7 @@ Prace nad wiernym przeniesieniem aplikacji natywnej odbywają się na gałęzi `
 
 ## Aktualny etap
 
-Etap 5: trwałe magazyny danych i kompletna obsługa profili rowerów.
+Etap 6: kompletna Historia pomiarów.
 
 Na tej gałęzi działają obecnie:
 
@@ -16,15 +16,19 @@ Na tej gałęzi działają obecnie:
 - kompletny ekran Pomiar,
 - trwały zapis profili, pomiarów i wpisów Dziennika w IndexedDB,
 - wersjonowany schemat bazy i migracje,
-- migracja danych starszego prototypu z `localStorage`,
-- dodawanie, edycja, szczegóły i usuwanie profili rowerów,
-- osobne ustawienia widelca i dampera,
-- zachowanie pomiarów po usunięciu profilu,
-- automatyczna synchronizacja profili z ekranem Pomiar,
+- kompletne profile rowerów,
+- lista Historii połączona z trwałym magazynem,
+- filtrowanie według roweru, „Bez profilu” i typu zawieszenia,
+- sortowanie od najnowszych albo najstarszych,
+- licznik wyników i czyszczenie filtrów,
+- szczegóły pomiaru,
+- edycja z pełnym ponownym przeliczeniem SAG,
+- usuwanie pojedyncze i usuwanie całej Historii z potwierdzeniem,
+- przekazanie pomiaru z Historii do szkicu wpisu Dziennika,
 - awaryjny tryb sesyjny, gdy IndexedDB jest niedostępne,
 - testy jednostkowe oraz workflow GitHub Actions.
 
-Profile rowerów są dostępne w zakładce `Więcej`. Historia i Dziennik korzystają już z trwałych magazynów, ale ich kompletne interfejsy powstaną w kolejnych etapach. PWA i service worker pozostają wyłączone.
+Profile rowerów są dostępne w zakładce `Więcej`. Pełny interfejs Dziennika powstanie w etapie 7. PWA i service worker pozostają wyłączone.
 
 ## Uruchomienie lokalne
 
@@ -51,5 +55,6 @@ Automatyczne testy są skonfigurowane w `.github/workflows/web-tests.yml`.
 - `docs/ETAP_3_MODELE_KALKULATOR_WALIDACJA.md`
 - `docs/ETAP_4_EKRAN_POMIAR.md`
 - `docs/ETAP_5_TRWALE_DANE_I_PROFILE.md`
+- `docs/ETAP_6_HISTORIA_POMIAROW.md`
 
 Gałąź `main` pozostaje wersją opublikowaną. Gałąź przebudowy nie powinna zostać połączona z `main`, dopóki wszystkie funkcje i testy nie zostaną ukończone.
