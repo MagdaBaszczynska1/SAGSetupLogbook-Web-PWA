@@ -21,7 +21,8 @@ export function createRouter({ onRouteChange }) {
 
   function start() {
     window.addEventListener("hashchange", notify);
-    if (!getRouteFromHash(window.location.hash) || !window.location.hash) {
+    const route = getRouteFromHash(window.location.hash);
+    if (!window.location.hash || route.hash !== window.location.hash) {
       navigate(DEFAULT_ROUTE_ID);
       return;
     }
