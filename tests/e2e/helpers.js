@@ -45,9 +45,19 @@ export async function setRangeValue(locator, value) {
   }, value);
 }
 
+export async function selectBikeByName(page, bikeName) {
+  const select = page.locator('[data-field="bike"]');
+  const optionValue = await select.locator("option").evaluateAll((options, expectedName) => {
+    const match = options.find(option => option.textContent?.includes(expectedName));
+    return match?.value ?? null;
+  }, bikeName);
+  expect(optionValue, `Nie znaleziono profilu ${bikeName} w kalkulatorze`).toBeTruthy();
+  await select.selectOption(optionValue);
+}
+
 export async function createForkMeasurement(page, { bikeName = "Rower testowy", compression = 40 } = {}) {
   await navigateTo(page, "Pomiar");
-  await page.locator('[data-field="bike"]').selectOption({ label: new RegExp(bikeName) });
+  await selectBikeByName(page, bikeName);
   await setRangeValue(page.locator('[data-field="compression"]'), compression);
   await expect(page.locator('[data-action="save"]')).toBeEnabled();
   await page.locator('[data-action="save"]').click();
