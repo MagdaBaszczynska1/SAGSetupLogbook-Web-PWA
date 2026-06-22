@@ -16,10 +16,13 @@ function bikeSummary(bike) {
 }
 
 function createBikeFormDialog() {
-  const dialog = createElement("dialog", { className: "app-dialog bike-form-dialog" });
+  const dialog = createElement("dialog", {
+    className: "app-dialog bike-form-dialog",
+    attributes: { "aria-labelledby": "bike-form-title" }
+  });
   dialog.innerHTML = `
     <form class="dialog-panel bike-form" data-form="bike" novalidate>
-      <div class="dialog-heading"><h3 data-text="bike-form-title">Nowy rower</h3><button type="button" data-action="close-bike-form" aria-label="Zamknij">×</button></div>
+      <div class="dialog-heading"><h3 id="bike-form-title" data-text="bike-form-title">Nowy rower</h3><button type="button" data-action="close-bike-form" aria-label="Zamknij">×</button></div>
       <input type="hidden" data-field="bike-id">
       <section class="form-section"><h4>Rower</h4>
         <label>Nazwa profilu <span aria-hidden="true">*</span><input data-field="name" autocomplete="off" required placeholder="np. Rower enduro"></label>
@@ -43,10 +46,13 @@ function createBikeFormDialog() {
 }
 
 function createBikeDetailDialog() {
-  const dialog = createElement("dialog", { className: "app-dialog" });
+  const dialog = createElement("dialog", {
+    className: "app-dialog",
+    attributes: { "aria-labelledby": "bike-detail-title" }
+  });
   dialog.innerHTML = `
     <div class="dialog-panel bike-detail-panel">
-      <div class="dialog-heading"><h3 data-text="bike-detail-name"></h3><button type="button" data-action="close-bike-detail" aria-label="Zamknij">×</button></div>
+      <div class="dialog-heading"><h3 id="bike-detail-title" data-text="bike-detail-name"></h3><button type="button" data-action="close-bike-detail" aria-label="Zamknij">×</button></div>
       <p data-text="bike-detail-model"></p>
       <section class="detail-section"><h4>Widelec</h4><div class="value-row"><span>Skok widelca</span><strong data-text="detail-fork-travel"></strong></div><div class="value-row"><span>Docelowy SAG</span><strong data-text="detail-fork-sag"></strong></div><div class="value-row"><span>Ciśnienie widelca</span><strong data-text="detail-fork-pressure"></strong></div></section>
       <section class="detail-section"><h4>Damper</h4><div class="value-row"><span>Skok dampera</span><strong data-text="detail-shock-travel"></strong></div><div class="value-row"><span>Docelowy SAG</span><strong data-text="detail-shock-sag"></strong></div><div class="value-row"><span>Ciśnienie dampera</span><strong data-text="detail-shock-pressure"></strong></div></section>
@@ -57,9 +63,12 @@ function createBikeDetailDialog() {
 }
 
 function createConfirmationDialog() {
-  const dialog = createElement("dialog", { className: "app-dialog" });
+  const dialog = createElement("dialog", {
+    className: "app-dialog",
+    attributes: { "aria-labelledby": "bike-confirm-title" }
+  });
   dialog.innerHTML = `
-    <div class="dialog-panel"><div class="dialog-heading"><h3 data-text="confirm-title"></h3><button type="button" data-action="cancel-delete" aria-label="Zamknij">×</button></div><p data-text="confirm-message"></p><div class="dialog-actions"><button type="button" class="secondary-action" data-action="cancel-delete">Anuluj</button><button type="button" class="danger-action" data-action="confirm-delete">Usuń</button></div></div>
+    <div class="dialog-panel"><div class="dialog-heading"><h3 id="bike-confirm-title" data-text="confirm-title"></h3><button type="button" data-action="cancel-delete" aria-label="Zamknij">×</button></div><p data-text="confirm-message"></p><div class="dialog-actions"><button type="button" class="secondary-action" data-action="cancel-delete">Anuluj</button><button type="button" class="danger-action" data-action="confirm-delete">Usuń</button></div></div>
   `;
   return dialog;
 }
