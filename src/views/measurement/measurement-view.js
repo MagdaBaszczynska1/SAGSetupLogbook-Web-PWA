@@ -10,7 +10,7 @@ import { createResetDialog, createSavedDialog } from "./measurement-confirmation
 import { bindMeasurementEvents } from "./measurement-events.js";
 import { renderMeasurement } from "./measurement-render.js";
 
-export function createMeasurementView({ bikeStore, measurementStore }) {
+export function createMeasurementView({ bikeStore, measurementStore, onAddRide = () => {} }) {
   const controller = createMeasurementController({
     bikes: bikeStore.getAll(),
     measurementStore
@@ -56,13 +56,14 @@ export function createMeasurementView({ bikeStore, measurementStore }) {
   controller.subscribe(snapshot => renderMeasurement(screen, snapshot));
   bikeStore.subscribe(snapshot => controller.setBikes(snapshot.records));
 
-  screen.addEventListener("measurement:add-ride", () => {
-    notice.hidden = false;
-    notice.textContent = "Pomiar jest gotowy. Formularz Dziennika zostanie podłączony w etapie 7.";
-    window.clearTimeout(screen.noticeTimer);
-    screen.noticeTimer = window.setTimeout(() => {
-      notice.hidden = true;
-    }, 4200);
+  screen.addEventListener("measurement:add-ride", event => {
+    const measurement = event.detail?.measurement;
+    if (!measurement) {
+      notice.hidden = false;
+      notice.textContent = "Nie udało się przekazać zapisanego pomiaru do Dziennika.";
+      return;
+    }
+    onAddRide(measurement);
   });
 
   return screen;
