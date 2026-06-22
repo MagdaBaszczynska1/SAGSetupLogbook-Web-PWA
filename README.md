@@ -6,25 +6,25 @@ Prace nad wiernym przeniesieniem aplikacji natywnej odbywają się na gałęzi `
 
 ## Aktualny etap
 
-Etap 4: kompletny ekran Pomiar.
+Etap 5: trwałe magazyny danych i kompletna obsługa profili rowerów.
 
 Na tej gałęzi działają obecnie:
 
 - cztery główne trasy i dolna nawigacja,
 - modele profilu roweru, pomiaru i Dziennika,
-- parser polskich liczb,
-- kalkulator SAG i walidacja,
-- działający ekran Pomiar,
-- wybór profilu oraz Widelec/Damper,
-- edycja skoku,
-- suwak i przyciski ugięcia,
-- cele 20%, 25%, 30% i wartość własna,
-- opcjonalne ciśnienie,
-- automatyczny wynik i interpretacja,
-- reset, pomoc i zapis bez identycznych duplikatów,
-- testy jednostkowe logiki i kontrolera Pomiaru.
+- kalkulator SAG, walidacja i parser polskich liczb,
+- kompletny ekran Pomiar,
+- trwały zapis profili, pomiarów i wpisów Dziennika w IndexedDB,
+- wersjonowany schemat bazy i migracje,
+- migracja danych starszego prototypu z `localStorage`,
+- dodawanie, edycja, szczegóły i usuwanie profili rowerów,
+- osobne ustawienia widelca i dampera,
+- zachowanie pomiarów po usunięciu profilu,
+- automatyczna synchronizacja profili z ekranem Pomiar,
+- awaryjny tryb sesyjny, gdy IndexedDB jest niedostępne,
+- testy jednostkowe oraz workflow GitHub Actions.
 
-Pomiary są obecnie przechowywane tylko w pamięci bieżącej sesji. IndexedDB i prawdziwe profile rowerów zostaną dodane w etapie 5. PWA pozostaje wyłączone.
+Profile rowerów są dostępne w zakładce `Więcej`. Historia i Dziennik korzystają już z trwałych magazynów, ale ich kompletne interfejsy powstaną w kolejnych etapach. PWA i service worker pozostają wyłączone.
 
 ## Uruchomienie lokalne
 
@@ -42,11 +42,14 @@ Nie otwieraj pliku `index.html` bezpośrednio przez `file://`, ponieważ aplikac
 
 `npm test`
 
+Automatyczne testy są skonfigurowane w `.github/workflows/web-tests.yml`.
+
 ## Dokumentacja etapów
 
 - `docs/ETAP_1_MAPA_APLIKACJI_NATYWNEJ.md`
 - `docs/ETAP_2_STRUKTURA_PROJEKTU.md`
 - `docs/ETAP_3_MODELE_KALKULATOR_WALIDACJA.md`
 - `docs/ETAP_4_EKRAN_POMIAR.md`
+- `docs/ETAP_5_TRWALE_DANE_I_PROFILE.md`
 
 Gałąź `main` pozostaje wersją opublikowaną. Gałąź przebudowy nie powinna zostać połączona z `main`, dopóki wszystkie funkcje i testy nie zostaną ukończone.
