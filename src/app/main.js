@@ -25,7 +25,10 @@ async function bootstrap() {
         router.navigate("journal");
       }
     }),
-    journal: () => createJournalView(dataContext),
+    journal: () => createJournalView({
+      ...dataContext,
+      onManageBikes: () => router.navigate("more")
+    }),
     more: () => createMoreView(dataContext)
   });
 
