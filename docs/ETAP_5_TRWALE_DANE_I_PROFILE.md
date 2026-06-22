@@ -217,13 +217,16 @@ Etap dodaje testy:
 - zachowania pomiarów po usunięciu profilu,
 - migracji starego `localStorage`,
 - jednokrotnego wykonania migracji,
-- synchronizacji profili z ekranem Pomiar.
+- synchronizacji profili z ekranem Pomiar,
+- kodowania danych użytkownika przed użyciem w HTML.
 
-Łącznie dodano 20 nowych testów. Cały zestaw jest uruchamiany poleceniem:
+Łącznie dodano 21 nowych testów. Cały zestaw jest uruchamiany poleceniem:
 
 ```bash
 npm test
 ```
+
+Workflow GitHub Actions zakończył pełny zestaw testów powodzeniem.
 
 Dodany workflow:
 
