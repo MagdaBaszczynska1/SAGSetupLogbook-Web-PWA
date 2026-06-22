@@ -2,6 +2,7 @@ import { ROUTES } from "./routes.js";
 import { createRouter } from "./router.js";
 import { createDataContext } from "./data-context.js";
 import { createAppShell } from "../components/layout/app-shell.js";
+import { createPwaManager } from "../pwa/pwa-manager.js";
 import { createMeasurementView } from "../views/measurement/measurement-view.js";
 import { createHistoryView } from "../views/history/history-view.js";
 import { createJournalView } from "../views/journal/journal-view.js";
@@ -12,7 +13,8 @@ async function bootstrap() {
   if (!mountPoint) throw new Error("Nie znaleziono punktu montowania aplikacji #app.");
 
   mountPoint.innerHTML = '<main class="app-loading" role="status"><strong>Uruchamianie aplikacji…</strong><span>Otwieranie bazy danych</span></main>';
-  const dataContext = await createDataContext();
+  const [dataContext] = await Promise.all([createDataContext()]);
+  const pwaManager = createPwaManager();
   let router;
 
   const viewFactories = Object.freeze({
@@ -29,7 +31,7 @@ async function bootstrap() {
       ...dataContext,
       onManageBikes: () => router.navigate("more")
     }),
-    more: () => createMoreView(dataContext)
+    more: () => createMoreView({ ...dataContext, pwaManager })
   });
 
   const views = new Map();
@@ -51,11 +53,13 @@ async function bootstrap() {
 
   shell = createAppShell({
     routes: ROUTES,
+    pwaManager,
     onNavigate: routeId => router.navigate(routeId)
   });
 
   mountPoint.replaceChildren(shell.element);
   router.start();
+  pwaManager.start();
 }
 
 bootstrap().catch(error => {
