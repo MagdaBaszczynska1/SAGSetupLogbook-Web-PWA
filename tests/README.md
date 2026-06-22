@@ -28,18 +28,24 @@ Aktualne testy jednostkowe obejmują:
 - zapis ustawień w `localStorage`,
 - pełną walidację kopii JSON,
 - ponowne przeliczanie wyników SAG podczas importu,
-- odrzucanie błędnego formatu, wersji i duplikatów,
 - zabezpieczenie CSV przed formułami arkusza,
-- atomowy import wszystkich kolekcji,
-- odświeżenie store po imporcie,
-- automatyczny rollback po błędzie,
+- atomowy import i automatyczny rollback,
+- manifest oraz ścieżki ikon PWA,
+- rejestrację service workera ze scope aplikacji,
+- natywny prompt instalacyjny,
+- wykrywanie online i offline,
+- oczekującą aktualizację i świadome `skipWaiting`,
+- kompletność listy precache,
+- instalację app shell bez automatycznego przejmowania zwykłych aktualizacji,
+- czyszczenie starych cache,
+- odpowiedź nawigacyjną offline,
 - trwałość dodawania, edycji i usuwania danych,
 - niezależność kopii zwracanych przez magazyn,
 - poprawne ładowanie modułów Historii, Dziennika i Więcej,
 - kodowanie danych użytkownika przed wstawieniem do HTML,
 - odrzucanie brakujących i powtarzających się identyfikatorów.
 
-W etapie 8 dodano 15 testów dotyczących wyglądu, kopii JSON, CSV, walidacji importu i rollbacku. Pełny zestaw `npm test` został uruchomiony przez GitHub Actions i zakończył się powodzeniem.
+W etapie 9 dodano 13 testów dotyczących manifestu, instalacji, app shell, trybu offline i kontrolowanej aktualizacji. Pełny zestaw `npm test` jest uruchamiany przez GitHub Actions.
 
 Workflow:
 
@@ -49,5 +55,5 @@ Workflow:
 
 Kolejne poziomy:
 
-- `integration/` — współpraca widoków z prawdziwym IndexedDB w przeglądarce,
-- `e2e/` — pełne ścieżki użytkownika w Safari i na iPhonie.
+- `integration/` — prawdziwy Cache Storage, service worker i IndexedDB w przeglądarce,
+- `e2e/` — instalacja, offline i aktualizacja w Safari oraz na iPhonie.
