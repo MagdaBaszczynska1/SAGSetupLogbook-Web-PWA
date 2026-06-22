@@ -23,14 +23,19 @@ Aktualne testy jednostkowe obejmują:
 - reset, zapis oraz ochronę przed identycznym duplikatem,
 - walidację formularza profilu roweru,
 - CRUD trwałych magazynów,
-- zachowanie danych po ponownym utworzeniu store,
-- zachowanie pomiarów po usunięciu profilu,
 - migrację starszych danych z `localStorage`,
-- synchronizację profili z ekranem Pomiar,
+- filtrowanie Historii po rowerze, „Bez profilu” i zawieszeniu,
+- sortowanie Historii,
+- historyczne opcje rowerów,
+- walidację i pełne przeliczanie edytowanego pomiaru,
+- zachowanie ID, daty i snapshotu roweru podczas edycji,
+- trwałość edycji oraz usuwania pomiarów,
+- przekazywanie kopii pomiaru do szkicu Dziennika,
 - kodowanie danych użytkownika przed wstawieniem do HTML,
-- odrzucanie brakujących i powtarzających się identyfikatorów.
+- odrzucanie brakujących i powtarzających się identyfikatorów,
+- poprawne ładowanie modułów Historii.
 
-W etapie 5 dodano 23 testy dotyczące profili, magazynów, migracji i bezpieczeństwa danych. Pełny zestaw `npm test` został uruchomiony przez GitHub Actions i zakończył się powodzeniem.
+W etapie 6 dodano 19 testów dotyczących zapytań Historii, edycji, trwałości operacji i integracji modułów. Pełny zestaw `npm test` jest uruchamiany przez GitHub Actions.
 
 Workflow:
 
@@ -40,5 +45,5 @@ Workflow:
 
 Kolejne poziomy:
 
-- `integration/` — współpraca widoków z trwałymi magazynami danych w prawdziwym IndexedDB,
+- `integration/` — współpraca widoków z prawdziwym IndexedDB w przeglądarce,
 - `e2e/` — pełne ścieżki użytkownika w Safari i na iPhonie.
