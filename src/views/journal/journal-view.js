@@ -12,9 +12,7 @@ import {
   rideEntryToFormValues,
   validateRideJournalForm
 } from "../../services/ride-journal-form.js";
-import {
-  getRideMeasurementCandidates
-} from "../../services/ride-measurement-candidates.js";
+import { getRideMeasurementCandidates } from "../../services/ride-measurement-candidates.js";
 import { createSagMeasurementSnapshot } from "../../models/ride-journal-entry.js";
 import { createElement } from "../../utils/dom.js";
 import { dateInputValueToIso, toDateInputValue } from "../../utils/date-formatters.js";
@@ -148,7 +146,7 @@ export function createJournalView({
       root.querySelector('[data-field="journal-search"]').value = searchText;
       root.querySelector('[data-field="journal-condition-filter"]').value = conditionFilter;
       root.querySelector('[data-field="journal-sort-order"]').value = sortOrder;
-      root.querySelector('[data-action="clear-journal-filters"]').hidden = !currentQuery.hasActiveFilters;
+      root.querySelector('.journal-filters [data-action="clear-journal-filters"]').hidden = !currentQuery.hasActiveFilters;
       root.querySelector('[data-text="journal-count"]').textContent = `Widoczne: ${visible} z ${total} • Aktywne filtry: ${currentQuery.activeFilterCount}`;
       root.querySelector('[data-region="journal-list"]').replaceChildren(...currentQuery.results.map(createRideJournalRow));
     }
@@ -208,6 +206,7 @@ export function createJournalView({
       const measurement = measurementStore.getById(id);
       if (measurement) setSelectedSnapshot(createSagMeasurementSnapshot(measurement));
     });
+    if (editor.sourceMeasurement) setSelectedSnapshot(createSagMeasurementSnapshot(editor.sourceMeasurement));
   }
 
   function refreshEditorContext({ restoreOriginal = true, autoSuggest = true } = {}) {
@@ -231,15 +230,18 @@ export function createJournalView({
 
   function openNewEntry(sourceMeasurement = null) {
     if (!bikesSnapshot.records.length) {
+      if (sourceMeasurement) pendingDraftMeasurement = sourceMeasurement;
       showNotice("Dodaj najpierw profil roweru.");
       onManageBikes();
       return;
     }
-    const values = rideEntryToFormValues(null);
+    const values = { ...rideEntryToFormValues(null) };
     if (sourceMeasurement) {
       values.rideDate = toDateInputValue(sourceMeasurement.date);
       if (sourceMeasurement.bikeID && bikesSnapshot.records.some(bike => bike.id === sourceMeasurement.bikeID)) {
         values.bikeID = sourceMeasurement.bikeID;
+      } else if (bikesSnapshot.records.length === 1) {
+        values.bikeID = bikesSnapshot.records[0].id;
       }
     } else if (bikesSnapshot.records.length === 1) {
       values.bikeID = bikesSnapshot.records[0].id;
@@ -255,12 +257,6 @@ export function createJournalView({
     };
     renderRideEntryForm(entryDialog, { values, bikes: bikesSnapshot.records });
     refreshEditorContext({ restoreOriginal: false, autoSuggest: true });
-    if (sourceMeasurement) setSelectedSnapshot(createSagMeasurementSnapshot(sourceMeasurement));
-    renderRideMeasurementCandidates(entryDialog, {
-      groups: editor.candidates.groups,
-      selectedSnapshots: [...editor.selectedSnapshots.values()],
-      contextChanged: false
-    });
     entryDialog.showModal();
     entryDialog.querySelector('[data-field="routeName"]').focus();
   }
@@ -350,11 +346,7 @@ export function createJournalView({
       render();
       return;
     }
-    if (entryDialog.open && event.target.dataset.field) {
-      const fieldError = entryDialog.querySelector(`[data-error="${event.target.dataset.field}"]`);
-      if (fieldError) fieldError.hidden = true;
-      clearRideEntryErrors(entryDialog);
-    }
+    if (entryDialog.open && event.target.dataset.field) clearRideEntryErrors(entryDialog);
   });
 
   root.addEventListener("change", event => {
@@ -408,7 +400,11 @@ export function createJournalView({
     if (action === "show-ride-entry") openDetail(id);
     if (action === "delete-ride-entry") askConfirmation(JOURNAL_CONFIRMATION_MODE.DELETE_ONE, id);
     if (action === "delete-all-ride-entries") askConfirmation(JOURNAL_CONFIRMATION_MODE.DELETE_ALL);
-    if (action === "close-ride-entry") { entryDialog.close(); editor = null; }
+    if (action === "close-ride-entry") {
+      entryDialog.close();
+      editor = null;
+      rideDraftStore.clear();
+    }
     if (action === "close-ride-detail") { detailDialog.close(); selectedEntryID = null; }
     if (action === "edit-ride-entry") {
       const entry = rideJournalStore.getById(selectedEntryID);
@@ -428,9 +424,9 @@ export function createJournalView({
       button.disabled = true;
       const finish = async () => {
         if (confirmationRequest?.mode === JOURNAL_CONFIRMATION_MODE.SAVE_WITHOUT_MEASUREMENT) {
-          const success = await saveEditor(true);
-          if (success) confirmationDialog.close();
-          return success;
+          confirmationDialog.close();
+          confirmationRequest = null;
+          return saveEditor(true);
         }
         const success = confirmationRequest?.mode === JOURNAL_CONFIRMATION_MODE.DELETE_ALL
           ? await rideJournalStore.deleteAll()
@@ -453,6 +449,13 @@ export function createJournalView({
   entryDialog.querySelector('[data-form="ride-entry"]').addEventListener("submit", event => {
     event.preventDefault();
     saveEditor(false);
+  });
+
+  entryDialog.addEventListener("close", () => {
+    if (editor) {
+      editor = null;
+      rideDraftStore.clear();
+    }
   });
 
   root.addEventListener("app:route-active", () => {
