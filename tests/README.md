@@ -26,9 +26,16 @@ Aktualne testy jednostkowe obejmują:
 - zachowanie danych po ponownym utworzeniu store,
 - zachowanie pomiarów po usunięciu profilu,
 - migrację starszych danych z `localStorage`,
-- synchronizację profili z ekranem Pomiar.
+- synchronizację profili z ekranem Pomiar,
+- kodowanie danych użytkownika przed wstawieniem do HTML.
 
-W etapie 5 dodano 20 testów dotyczących profili, magazynów i migracji. Repozytorium zawiera workflow `.github/workflows/web-tests.yml`, który uruchamia cały zestaw przez `npm test` przy zmianach na gałęzi przebudowy i w pull requestach.
+W etapie 5 dodano 21 testów dotyczących profili, magazynów, migracji i bezpieczeństwa renderowania. Pełny zestaw `npm test` został uruchomiony przez GitHub Actions i zakończył się powodzeniem.
+
+Workflow:
+
+```text
+.github/workflows/web-tests.yml
+```
 
 Kolejne poziomy:
 
