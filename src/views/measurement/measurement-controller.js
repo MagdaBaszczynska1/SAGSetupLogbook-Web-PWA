@@ -51,10 +51,11 @@ function inputToken(form, live) {
 
 export function createMeasurementController({ bikes = [], measurementStore }) {
   if (!measurementStore?.add) throw new TypeError("Brak magazynu pomiarów.");
+  let bikeList = [...bikes];
   let form = initialForm();
   const listeners = new Set();
 
-  const bike = () => bikes.find(item => item.id === form.selectedBikeID) ?? null;
+  const bike = () => bikeList.find(item => item.id === form.selectedBikeID) ?? null;
   const live = () => evaluateLiveSag({
     suspensionTravel: form.suspensionTravel,
     measuredCompression: form.measuredCompression,
@@ -80,7 +81,7 @@ export function createMeasurementController({ bikes = [], measurementStore }) {
     const calculation = live();
     return Object.freeze({
       ...form,
-      bikes: Object.freeze([...bikes]),
+      bikes: Object.freeze([...bikeList]),
       selectedBike: bike(),
       liveCalculation: calculation,
       saveButtonState: resolveCalculatorSaveState({
@@ -129,9 +130,23 @@ export function createMeasurementController({ bikes = [], measurementStore }) {
     notify();
   }
 
+  function setBikes(nextBikes) {
+    bikeList = [...nextBikes];
+    if (form.selectedBikeID && !bikeList.some(item => item.id === form.selectedBikeID)) {
+      form.selectedBikeID = null;
+      applyProfile();
+      return;
+    }
+    if (form.selectedBikeID) {
+      applyProfile();
+      return;
+    }
+    notify();
+  }
+
   function setSelectedBikeID(value) {
     const id = value ? String(value) : null;
-    if (id && !bikes.some(item => item.id === id)) return;
+    if (id && !bikeList.some(item => item.id === id)) return;
     form.selectedBikeID = id;
     applyProfile();
   }
@@ -146,8 +161,7 @@ export function createMeasurementController({ bikes = [], measurementStore }) {
     const configuration = getTravelSliderConfiguration(form.suspensionType);
     const numeric = Number(value);
     if (!Number.isFinite(numeric) || numeric <= 0) return;
-    const step = configuration.step;
-    const rounded = Math.round(numeric / step) * step;
+    const rounded = Math.round(numeric / configuration.step) * configuration.step;
     change({
       suspensionTravel: rounded,
       measuredCompression: Math.min(form.measuredCompression, rounded),
@@ -261,6 +275,7 @@ export function createMeasurementController({ bikes = [], measurementStore }) {
   return Object.freeze({
     subscribe,
     getSnapshot: snapshot,
+    setBikes,
     setSelectedBikeID,
     setSuspensionType,
     setManualTravel,
