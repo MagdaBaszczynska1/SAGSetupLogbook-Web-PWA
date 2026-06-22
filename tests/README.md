@@ -22,24 +22,24 @@ Aktualne testy jednostkowe obejmują:
 - profile rowerów i trwałe magazyny,
 - migrację starszych danych z `localStorage`,
 - kompletną Historię pomiarów,
-- wyszukiwanie i filtry Dziennika,
-- sortowanie Dziennika,
-- grupowanie kandydatów pomiarów,
-- automatyczne sugerowanie pomiarów z dnia jazdy,
-- ograniczenie do jednego pomiaru danego typu,
-- granicę siedmiu dni dla pomiarów historycznych,
-- walidację formularza wpisu,
-- zachowanie snapshotów podczas edycji,
-- potwierdzenie zapisu bez pomiaru po zmianie kontekstu,
-- obsługę usuniętego profilu,
+- kompletny Dziennik jazd,
 - lokalne daty kalendarzowe,
-- trwałość dodawania, edycji i usuwania wpisów,
+- wygląd systemowy, jasny i ciemny,
+- zapis ustawień w `localStorage`,
+- pełną walidację kopii JSON,
+- ponowne przeliczanie wyników SAG podczas importu,
+- odrzucanie błędnego formatu, wersji i duplikatów,
+- zabezpieczenie CSV przed formułami arkusza,
+- atomowy import wszystkich kolekcji,
+- odświeżenie store po imporcie,
+- automatyczny rollback po błędzie,
+- trwałość dodawania, edycji i usuwania danych,
 - niezależność kopii zwracanych przez magazyn,
-- poprawne ładowanie modułów Dziennika,
+- poprawne ładowanie modułów Historii, Dziennika i Więcej,
 - kodowanie danych użytkownika przed wstawieniem do HTML,
 - odrzucanie brakujących i powtarzających się identyfikatorów.
 
-W etapie 7 dodano 36 testów dotyczących Dziennika, wyboru pomiarów, dat, snapshotów i trwałości operacji. Pełny zestaw `npm test` został uruchomiony przez GitHub Actions i zakończył się powodzeniem.
+W etapie 8 dodano 15 testów dotyczących wyglądu, kopii JSON, CSV, walidacji importu i rollbacku. Pełny zestaw `npm test` został uruchomiony przez GitHub Actions i zakończył się powodzeniem.
 
 Workflow:
 
