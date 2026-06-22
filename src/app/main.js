@@ -13,10 +13,18 @@ async function bootstrap() {
 
   mountPoint.innerHTML = '<main class="app-loading" role="status"><strong>Uruchamianie aplikacji…</strong><span>Otwieranie bazy danych</span></main>';
   const dataContext = await createDataContext();
+  let router;
 
   const viewFactories = Object.freeze({
     measurement: () => createMeasurementView(dataContext),
-    history: () => createHistoryView(dataContext),
+    history: () => createHistoryView({
+      ...dataContext,
+      onStartMeasurement: () => router.navigate("measurement"),
+      onAddRide: measurement => {
+        dataContext.rideDraftStore.setSourceMeasurement(measurement);
+        router.navigate("journal");
+      }
+    }),
     journal: () => createJournalView(dataContext),
     more: () => createMoreView(dataContext)
   });
@@ -32,7 +40,7 @@ async function bootstrap() {
   };
 
   let shell;
-  const router = createRouter({
+  router = createRouter({
     onRouteChange(route) {
       shell.renderRoute(route, getView(route.id));
     }
