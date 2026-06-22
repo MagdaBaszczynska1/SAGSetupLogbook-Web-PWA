@@ -1,6 +1,4 @@
 import { createElement } from "../../utils/dom.js";
-import { stage4BikeProfiles } from "../../stores/stage4-demo-data.js";
-import { temporaryMeasurementStore } from "../../stores/temporary-measurement-store.js";
 import { createMeasurementController } from "./measurement-controller.js";
 import { createMeasurementToolbar, createConfigurationCards } from "./measurement-configuration.js";
 import { createCompressionCard, createTargetCard, createAdditionalDataCard } from "./measurement-controls.js";
@@ -12,10 +10,10 @@ import { createResetDialog, createSavedDialog } from "./measurement-confirmation
 import { bindMeasurementEvents } from "./measurement-events.js";
 import { renderMeasurement } from "./measurement-render.js";
 
-export function createMeasurementView() {
+export function createMeasurementView({ bikeStore, measurementStore }) {
   const controller = createMeasurementController({
-    bikes: stage4BikeProfiles,
-    measurementStore: temporaryMeasurementStore
+    bikes: bikeStore.getAll(),
+    measurementStore
   });
 
   const screen = createElement("section", {
@@ -56,6 +54,7 @@ export function createMeasurementView() {
 
   bindMeasurementEvents(screen, controller);
   controller.subscribe(snapshot => renderMeasurement(screen, snapshot));
+  bikeStore.subscribe(snapshot => controller.setBikes(snapshot.records));
 
   screen.addEventListener("measurement:add-ride", () => {
     notice.hidden = false;
