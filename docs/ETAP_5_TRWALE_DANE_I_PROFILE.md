@@ -80,6 +80,8 @@ Dostępne operacje:
 
 Ostatnia operacja będzie wykorzystana podczas importu kopii zapasowej.
 
+Magazyny odrzucają rekordy bez identyfikatora oraz próby dodania lub importu powtarzających się identyfikatorów. Dzięki temu stan w pamięci nie może różnić się od zawartości IndexedDB wskutek cichego nadpisania klucza.
+
 ## Tryb awaryjny
 
 Jeżeli przeglądarka blokuje IndexedDB, aplikacja uruchamia magazyn pamięciowy.
@@ -218,9 +220,10 @@ Etap dodaje testy:
 - migracji starego `localStorage`,
 - jednokrotnego wykonania migracji,
 - synchronizacji profili z ekranem Pomiar,
-- kodowania danych użytkownika przed użyciem w HTML.
+- kodowania danych użytkownika przed użyciem w HTML,
+- odrzucania brakujących i powtarzających się identyfikatorów.
 
-Łącznie dodano 21 nowych testów. Cały zestaw jest uruchamiany poleceniem:
+Łącznie dodano 23 nowe testy. Cały zestaw jest uruchamiany poleceniem:
 
 ```bash
 npm test
