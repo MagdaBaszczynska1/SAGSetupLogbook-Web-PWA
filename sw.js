@@ -1,5 +1,6 @@
 const CACHE_PREFIX = "sag-setup-logbook-";
-const CACHE_NAME = `${CACHE_PREFIX}app-v9-20260622-1`;
+const LEGACY_CACHE_PREFIX = "sag-logbook-";
+const CACHE_NAME = `${CACHE_PREFIX}app-v9-20260622-2`;
 const APP_VERSION = "0.9.0";
 
 const PRECACHE_URLS = [
@@ -102,6 +103,10 @@ const PRECACHE_ABSOLUTE_URLS = new Set(
   PRECACHE_URLS.map(path => new URL(path, self.registration.scope).href)
 );
 
+function isApplicationCache(name) {
+  return name.startsWith(CACHE_PREFIX) || name.startsWith(LEGACY_CACHE_PREFIX);
+}
+
 async function fetchAndCache(cache, url) {
   const request = new Request(url, { cache: "reload", credentials: "same-origin" });
   const response = await fetch(request);
@@ -111,10 +116,13 @@ async function fetchAndCache(cache, url) {
 
 self.addEventListener("install", event => {
   event.waitUntil((async () => {
+    const existingCacheNames = await caches.keys();
+    const migratesLegacyWorker = existingCacheNames.some(name => name.startsWith(LEGACY_CACHE_PREFIX));
     const cache = await caches.open(CACHE_NAME);
     await Promise.all(
       PRECACHE_URLS.map(path => fetchAndCache(cache, new URL(path, self.registration.scope).href))
     );
+    if (migratesLegacyWorker) await self.skipWaiting();
   })());
 });
 
@@ -123,7 +131,7 @@ self.addEventListener("activate", event => {
     const cacheNames = await caches.keys();
     await Promise.all(
       cacheNames
-        .filter(name => name.startsWith(CACHE_PREFIX) && name !== CACHE_NAME)
+        .filter(name => isApplicationCache(name) && name !== CACHE_NAME)
         .map(name => caches.delete(name))
     );
     await self.clients.claim();
