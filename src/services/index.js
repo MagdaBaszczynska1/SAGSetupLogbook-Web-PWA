@@ -8,3 +8,4 @@ export * from "./measurement-form.js";
 export * from "./ride-journal-query.js";
 export * from "./ride-journal-form.js";
 export * from "./ride-measurement-candidates.js";
+export * from "./data-backup.js";
