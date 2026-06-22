@@ -6,7 +6,7 @@ Prace nad wiernym przeniesieniem aplikacji natywnej odbywają się na gałęzi `
 
 ## Aktualny etap
 
-Etap 6: kompletna Historia pomiarów.
+Etap 7: kompletny Dziennik jazd.
 
 Na tej gałęzi działają obecnie:
 
@@ -17,18 +17,23 @@ Na tej gałęzi działają obecnie:
 - trwały zapis profili, pomiarów i wpisów Dziennika w IndexedDB,
 - wersjonowany schemat bazy i migracje,
 - kompletne profile rowerów,
-- lista Historii połączona z trwałym magazynem,
-- filtrowanie według roweru, „Bez profilu” i typu zawieszenia,
-- sortowanie od najnowszych albo najstarszych,
-- licznik wyników i czyszczenie filtrów,
-- szczegóły pomiaru,
-- edycja z pełnym ponownym przeliczeniem SAG,
-- usuwanie pojedyncze i usuwanie całej Historii z potwierdzeniem,
-- przekazanie pomiaru z Historii do szkicu wpisu Dziennika,
+- kompletna Historia pomiarów,
+- lista Dziennika połączona z trwałym magazynem,
+- wyszukiwanie po trasie, rowerze, notatce i warunkach,
+- filtrowanie według roweru i warunków,
+- sortowanie od najnowszych, najstarszych albo najwyżej ocenionych,
+- dodawanie i edycja wpisów,
+- wybór maksymalnie jednego pomiaru widelca i jednego dampera,
+- automatyczne sugerowanie pomiarów tego roweru z dnia jazdy,
+- kandydaci historyczni z poprzednich siedmiu dni oraz pomiary bez profilu,
+- historyczne snapshoty profilu i pomiarów,
+- szczegóły wpisu, edycja i usuwanie,
+- potwierdzenie zapisu bez pomiaru po zmianie roweru lub dnia jazdy,
+- przekazanie dokładnego pomiaru z Historii do nowego wpisu,
 - awaryjny tryb sesyjny, gdy IndexedDB jest niedostępne,
 - testy jednostkowe oraz workflow GitHub Actions.
 
-Profile rowerów są dostępne w zakładce `Więcej`. Pełny interfejs Dziennika powstanie w etapie 7. PWA i service worker pozostają wyłączone.
+PWA, service worker, kompletne Ustawienia oraz eksport i import danych pozostają wyłączone do kolejnych etapów.
 
 ## Uruchomienie lokalne
 
@@ -56,5 +61,6 @@ Automatyczne testy są skonfigurowane w `.github/workflows/web-tests.yml`.
 - `docs/ETAP_4_EKRAN_POMIAR.md`
 - `docs/ETAP_5_TRWALE_DANE_I_PROFILE.md`
 - `docs/ETAP_6_HISTORIA_POMIAROW.md`
+- `docs/ETAP_7_DZIENNIK_JAZD.md`
 
 Gałąź `main` pozostaje wersją opublikowaną. Gałąź przebudowy nie powinna zostać połączona z `main`, dopóki wszystkie funkcje i testy nie zostaną ukończone.
