@@ -3,12 +3,12 @@ import { createElement } from "../../utils/dom.js";
 export function createMeasurementHelpDialog() {
   const element = createElement("dialog", {
     className: "app-dialog",
-    attributes: { "data-dialog": "help" }
+    attributes: { "data-dialog": "help", "aria-labelledby": "measurement-help-title" }
   });
   element.innerHTML = `
     <div class="dialog-panel help-dialog">
       <div class="dialog-heading">
-        <h3>Jak wykonać pomiar SAG</h3>
+        <h3 id="measurement-help-title">Jak wykonać pomiar SAG</h3>
         <button type="button" data-action="close-help" aria-label="Zamknij">×</button>
       </div>
       <ol class="instruction-list">
@@ -30,11 +30,11 @@ export function createMeasurementHelpDialog() {
 export function createTargetHelpDialog() {
   const element = createElement("dialog", {
     className: "app-dialog",
-    attributes: { "data-dialog": "target-help" }
+    attributes: { "data-dialog": "target-help", "aria-labelledby": "target-help-title" }
   });
   element.innerHTML = `
     <div class="dialog-panel">
-      <div class="dialog-heading"><h3>Docelowy SAG</h3><button type="button" data-action="close-target-help" aria-label="Zamknij">×</button></div>
+      <div class="dialog-heading"><h3 id="target-help-title">Docelowy SAG</h3><button type="button" data-action="close-target-help" aria-label="Zamknij">×</button></div>
       <p data-text="target-help-copy"></p>
       <p>Wartości z profilu roweru są wczytywane automatycznie. Ostateczne zalecenia sprawdź w instrukcji producenta zawieszenia.</p>
       <button type="button" class="primary-action" data-action="close-target-help">Gotowe</button>
