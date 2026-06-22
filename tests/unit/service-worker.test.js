@@ -21,18 +21,10 @@ function createWorkerRuntime(source) {
   const shell = new Response("offline-shell", { status: 200, headers: { "content-type": "text/html" } });
   const cache = {
     async put(url, response) { puts.push({ url: String(url), response }); },
-    async match(url) {
-      return String(url).endsWith("/index.html") ? shell.clone() : null;
-    }
+    async match(url) { return String(url).endsWith("/index.html") ? shell.clone() : null; }
   };
   const context = {
-    console,
-    URL,
-    Set,
-    Promise,
-    Error,
-    Request,
-    Response,
+    console, URL, Set, Promise, Error, Request, Response,
     fetch: async request => {
       const url = typeof request === "string" ? request : request.url;
       fetched.push(url);
@@ -50,22 +42,12 @@ function createWorkerRuntime(source) {
       async skipWaiting() { skipped += 1; },
       clients: {
         async claim() { claimed += 1; },
-        async matchAll() {
-          return [{ postMessage(message) { clientMessages.push(message); } }];
-        }
+        async matchAll() { return [{ postMessage(message) { clientMessages.push(message); } }]; }
       }
     }
   };
   vm.runInNewContext(source, context, { filename: "sw.js" });
-  return {
-    handlers,
-    puts,
-    fetched,
-    deletedCaches,
-    clientMessages,
-    get claimed() { return claimed; },
-    get skipped() { return skipped; }
-  };
+  return { handlers, puts, fetched, deletedCaches, clientMessages, get claimed() { return claimed; }, get skipped() { return skipped; } };
 }
 
 test("każdy zasób wpisany do precache istnieje w repozytorium", async () => {
@@ -100,7 +82,7 @@ test("aktywacja usuwa wyłącznie stare cache aplikacji i przejmuje klientów", 
   assert.equal(runtime.claimed, 1);
   assert.equal(runtime.clientMessages.length, 1);
   assert.equal(runtime.clientMessages[0].type, "PWA_ACTIVATED");
-  assert.equal(runtime.clientMessages[0].version, "0.9.0");
+  assert.equal(runtime.clientMessages[0].version, "1.0.0-rc.1");
 });
 
 test("nawigacja offline zwraca zapisany index aplikacji", async () => {
