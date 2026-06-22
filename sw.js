@@ -1,7 +1,7 @@
 const CACHE_PREFIX = "sag-setup-logbook-";
 const LEGACY_CACHE_PREFIX = "sag-logbook-";
-const CACHE_NAME = `${CACHE_PREFIX}app-v9-20260622-2`;
-const APP_VERSION = "0.9.0";
+const CACHE_NAME = `${CACHE_PREFIX}app-1.0.0-rc.1-20260622-1`;
+const APP_VERSION = "1.0.0-rc.1";
 
 const PRECACHE_URLS = [
   "./",
@@ -23,6 +23,8 @@ const PRECACHE_URLS = [
   "./src/styles/journal.css",
   "./src/styles/more.css",
   "./src/styles/pwa.css",
+  "./src/app/theme-bootstrap.js",
+  "./src/app/version.js",
   "./src/app/main.js",
   "./src/app/data-context.js",
   "./src/app/router.js",
@@ -99,9 +101,7 @@ const PRECACHE_URLS = [
 ];
 
 const APP_SHELL_URL = new URL("./index.html", self.registration.scope).href;
-const PRECACHE_ABSOLUTE_URLS = new Set(
-  PRECACHE_URLS.map(path => new URL(path, self.registration.scope).href)
-);
+const PRECACHE_ABSOLUTE_URLS = new Set(PRECACHE_URLS.map(path => new URL(path, self.registration.scope).href));
 
 function isApplicationCache(name) {
   return name.startsWith(CACHE_PREFIX) || name.startsWith(LEGACY_CACHE_PREFIX);
@@ -119,9 +119,7 @@ self.addEventListener("install", event => {
     const existingCacheNames = await caches.keys();
     const migratesLegacyWorker = existingCacheNames.some(name => name.startsWith(LEGACY_CACHE_PREFIX));
     const cache = await caches.open(CACHE_NAME);
-    await Promise.all(
-      PRECACHE_URLS.map(path => fetchAndCache(cache, new URL(path, self.registration.scope).href))
-    );
+    await Promise.all(PRECACHE_URLS.map(path => fetchAndCache(cache, new URL(path, self.registration.scope).href)));
     if (migratesLegacyWorker) await self.skipWaiting();
   })());
 });
@@ -129,11 +127,7 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {
   event.waitUntil((async () => {
     const cacheNames = await caches.keys();
-    await Promise.all(
-      cacheNames
-        .filter(name => isApplicationCache(name) && name !== CACHE_NAME)
-        .map(name => caches.delete(name))
-    );
+    await Promise.all(cacheNames.filter(name => isApplicationCache(name) && name !== CACHE_NAME).map(name => caches.delete(name)));
     await self.clients.claim();
     const clients = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
     clients.forEach(client => client.postMessage({ type: "PWA_ACTIVATED", version: APP_VERSION }));
@@ -142,9 +136,7 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("message", event => {
   if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
-  if (event.data?.type === "GET_VERSION") {
-    event.source?.postMessage?.({ type: "PWA_VERSION", version: APP_VERSION });
-  }
+  if (event.data?.type === "GET_VERSION") event.source?.postMessage?.({ type: "PWA_VERSION", version: APP_VERSION });
 });
 
 async function appShellResponse() {
@@ -179,19 +171,15 @@ async function networkFirst(request) {
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET") return;
-
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-
   if (request.mode === "navigate") {
     event.respondWith(appShellResponse());
     return;
   }
-
   if (PRECACHE_ABSOLUTE_URLS.has(url.href)) {
     event.respondWith(cacheFirst(request));
     return;
   }
-
   event.respondWith(networkFirst(request));
 });
