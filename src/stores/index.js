@@ -1,3 +1,3 @@
-// Etap 5 doda trwałe magazyny IndexedDB dla profili, pomiarów i Dziennika.
-// Do tego czasu widoki nie mogą zapisywać danych w przypadkowych miejscach.
-export {};
+export * from "./bike-store.js";
+export * from "./measurement-store.js";
+export * from "./ride-journal-store.js";
