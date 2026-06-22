@@ -1,0 +1,60 @@
+{
+  "id": "./",
+  "name": "SAG Setup Logbook",
+  "short_name": "SAG Logbook",
+  "description": "Kalkulator SAG, historia pomiarów i lokalny dziennik ustawień zawieszenia roweru.",
+  "lang": "pl",
+  "dir": "ltr",
+  "start_url": "./#/measurement",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#f6f7f8",
+  "theme_color": "#168b2b",
+  "categories": ["sports", "utilities", "lifestyle"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nowy pomiar",
+      "short_name": "Pomiar",
+      "description": "Otwórz kalkulator SAG.",
+      "url": "./#/measurement",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Historia pomiarów",
+      "short_name": "Historia",
+      "description": "Otwórz zapisane pomiary SAG.",
+      "url": "./#/history",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Dziennik jazd",
+      "short_name": "Dziennik",
+      "description": "Otwórz wpisy z jazd.",
+      "url": "./#/journal",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}
