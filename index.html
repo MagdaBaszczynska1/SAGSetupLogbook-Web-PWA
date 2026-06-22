@@ -6,6 +6,14 @@
   <meta name="theme-color" content="#f6f7f8">
   <meta name="description" content="SAG Setup Logbook — webowa wersja aplikacji do pomiaru SAG i zapisywania ustawień zawieszenia.">
   <title>SAG Setup Logbook</title>
+  <script>
+    try {
+      const saved = JSON.parse(localStorage.getItem("sagSetupLogbookWeb.settings.v1") || "null");
+      if (saved && (saved.appearanceMode === "light" || saved.appearanceMode === "dark")) {
+        document.documentElement.dataset.theme = saved.appearanceMode;
+      }
+    } catch {}
+  </script>
   <link rel="stylesheet" href="./src/styles/index.css">
 </head>
 <body>
