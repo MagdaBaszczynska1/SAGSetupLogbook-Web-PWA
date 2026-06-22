@@ -6,7 +6,7 @@ Prace nad wiernym przeniesieniem aplikacji natywnej odbywają się na gałęzi `
 
 ## Aktualny etap
 
-Etap 8: kompletne Więcej i Ustawienia.
+Etap 9: kompletna Progressive Web App.
 
 Na tej gałęzi działają obecnie:
 
@@ -21,16 +21,20 @@ Na tej gałęzi działają obecnie:
 - kompletny Dziennik jazd,
 - ekran Więcej z poradnikiem i informacjami o prywatności,
 - wygląd systemowy, jasny i ciemny zapisywany lokalnie,
-- pełny eksport JSON,
-- raport CSV zabezpieczony przed formułami arkusza,
-- import JSON z walidacją całego pliku przed zapisem,
-- kopia ratunkowa pobierana przed importem,
-- atomowe zastępowanie kolekcji i automatyczny rollback po błędzie,
-- odświeżenie wszystkich magazynów po imporcie,
+- pełny eksport JSON i raport CSV,
+- walidowany import JSON z kopią ratunkową oraz rollbackiem,
+- manifest instalacyjny PWA,
+- ikony zwykłe, maskowalne i ikona dla ekranu początkowego iOS,
+- instalacja przez natywny prompt albo instrukcję Safari,
+- pełny app shell działający offline,
+- wersjonowane cache i usuwanie starych cache,
+- bezpieczna aktualizacja uruchamiana po decyzji użytkownika,
+- jednorazowa migracja ze starego service workera bez trwałego zablokowania aplikacji,
+- globalne komunikaty offline i dostępnej aktualizacji,
 - awaryjny tryb sesyjny, gdy IndexedDB jest niedostępne,
 - testy jednostkowe oraz workflow GitHub Actions.
 
-PWA, service worker, pełne testy przeglądarkowe i końcowy audyt pozostają do kolejnych etapów.
+Pełne testy E2E w mobilnym Safari i końcowy audyt pozostają do kolejnych etapów.
 
 ## Uruchomienie lokalne
 
@@ -42,7 +46,7 @@ Następnie otwórz:
 
 `http://localhost:8080/#/measurement`
 
-Nie otwieraj pliku `index.html` bezpośrednio przez `file://`, ponieważ aplikacja używa modułów JavaScript.
+Nie otwieraj pliku `index.html` bezpośrednio przez `file://`. Service worker działa wyłącznie w bezpiecznym kontekście HTTPS albo na `localhost`.
 
 ## Testy
 
@@ -60,5 +64,6 @@ Automatyczne testy są skonfigurowane w `.github/workflows/web-tests.yml`.
 - `docs/ETAP_6_HISTORIA_POMIAROW.md`
 - `docs/ETAP_7_DZIENNIK_JAZD.md`
 - `docs/ETAP_8_WIECEJ_USTAWIENIA_KOPIE.md`
+- `docs/ETAP_9_PWA_OFFLINE_AKTUALIZACJE.md`
 
-Gałąź `main` pozostaje wersją opublikowaną. Gałąź przebudowy nie powinna zostać połączona z `main`, dopóki wszystkie funkcje i testy nie zostaną ukończone.
+Gałąź `main` pozostaje wersją opublikowaną. Gałąź przebudowy nie powinna zostać połączona z `main`, dopóki testy przeglądarkowe i końcowy audyt nie zostaną ukończone.
